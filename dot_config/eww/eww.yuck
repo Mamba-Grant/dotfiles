@@ -1,0 +1,33 @@
+(defvar     media           "{}")
+(defvar     media_positions "{}")
+(defvar     notifications   "{}")
+(defvar     apps            "{}")
+
+    (deflisten  window      `scripts/hyprland window`)
+(deflisten  workspaces  `scripts/hyprland workspaces`)
+
+    (defpoll    volume      :interval "3s"      :initial "{}" `scripts/volume get`)
+    (defpoll    battery     :interval "3s"      :initial "{}" `scripts/battery.sh get`)
+    (defpoll    bluetooth   :interval "3s"      :initial "{}" `scripts/bluetooth get`)
+    (defpoll    network     :interval "30s"     :initial "{}" `scripts/network.sh get`)
+    (defpoll    theme       :interval "3s"      :initial "{}" `scripts/theme get`)
+    (defpoll    power       :interval "15s"     :initial "{}" `scripts/power.sh get`)
+    (defpoll    night_light :interval "15s"     :initial "{}" `scripts/night_light get`)
+    (defpoll    brightness  :interval "3s"      :initial "{}" `scripts/brightness get`)
+
+    (deflisten  events      :initial "[]" `scripts/events get`)
+(deflisten  updates     `waybar-module-pacman-updates`)
+    (defpoll    weather     :interval "3m" :initial "[]" `scripts/weather`)
+
+    (defpoll    panel_clock :interval "5s" `date "+%H:%M  |  %b. %d. %A"`)
+    (defpoll    hour        :interval "5s" `date "+%H"`)
+    (defpoll    minutes     :interval "5s" `date "+%M"`)
+    (defpoll    date        :interval "5s" `date "+%b. %d. %A"`)
+    (defpoll    uptime      :interval "60s" "uptime | awk '{print $3}' | tr ',' ' '")
+
+    (defvar real_name "Grant")
+    (defvar user_name "@Mamba")
+
+    (include "./yuck/widgets.yuck")
+    (include "./yuck/windows.yuck")
+    (include "./setups/leftbar.yuck")

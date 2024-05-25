@@ -1,0 +1,28 @@
+
+;; (defpoll    timer     :interval "1s" `date "+%M"`)
+(defpoll ms :interval "0.2s" `date +%s%3N`)
+
+(defwindow desktop_video
+  :monitor 0
+  :geometry (geometry
+    :x "0%"
+    :y "0%"
+    :width "10%"
+    :height "10%"
+  :anchor "bottom right")
+  :stacking "bg"
+  :windowtype "dock"
+  (video)
+)
+
+(defwidget video [] (box
+    :class "bgvideo" :orientation "v" :space-evenly "false" :vexpand "true" :hexpand "true" 
+    :style "background-image: url('assets/toothless/toothless_${round(ms/60 % 245, 0)}.png')"
+    ;; (label :text {round(ms/60 % 245, 0)})
+))
+
+;; (defwidget video [] ) ()
+
+;; (defwidget video [] (box
+;;     (literal :content var))
+;; )
