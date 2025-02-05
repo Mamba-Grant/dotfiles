@@ -106,6 +106,7 @@ in {
 
         # Applications
         vesktop
+        ungoogled-chromium
         obsidian
         dropbox
         zathura

@@ -8,19 +8,20 @@
             style = "dark";
         };
 
-        extraPackages = [pkgs.texlab];
+        # extraPackages = [pkgs.texlab pkgs.vimPlugins.nvim-lastplace pkgs.vimPlugins.vimtex];
         terminal.toggleterm.enable = true;
-        terminal.toggleterm.mappings.open = "<c-\>";
+        terminal.toggleterm.mappings.open = "<c-t>";
         terminal.toggleterm.setupOpts.direction = "horizontal";
         statusline.lualine.enable = true;
         telescope.enable = true;
         autocomplete.nvim-cmp.enable = true;
         useSystemClipboard = true;
+        spellcheck.enable = true;
+        spellcheck.ignoredFiletypes = ["toggleterm" "python" "julia" "nix"];
 
         utility.motion.leap.enable = true;
 
         mini.surround.enable = true;
-        mini.animate.enable = true;
         mini.pairs.enable = true;
         mini.move.enable = true;
 
@@ -95,6 +96,28 @@
                 action = "<cmd>:Ex<CR>";
             }
 
+            {
+                key = "j";
+                mode = "n";
+                silent = true;
+                action = "gj";
+            }
+
+            {
+                key = "k";
+                mode = "n";
+                silent = true;
+                action = "gk";
+            }
+
+            {
+                key = "<Esc>";
+                mode = "t";
+                silent = true;
+                action = "<c-\><c-n>";
+            }
+
+
         ];
 
         languages = {
@@ -102,6 +125,9 @@
             enableTreesitter = true;
 
             nix.enable = true;
+            julia.enable = true;
+            julia.lsp.enable = true;
+            julia.treesitter.enable = true;
             python.enable = true;
             python.format.enable = true;
             python.format.type = "ruff";
@@ -110,10 +136,24 @@
 
         extraPlugins = with pkgs.vimPlugins; {
 
-            # vimtex = {
-            #     package = vimtex;
-            #     setup = "require('vimtex').setup {}";
-            # };
+            nvim-lastplace = {
+                package = nvim-lastplace;
+                setup = "require('nvim-lastplace').setup {}";
+            };
+
+            vimtex = {
+                package = vimtex;
+            };
+
+            wrapping = {
+                package = wrapping-nvim;
+                setup = "require('wrapping').setup {}";
+            };
+
+             imge-clip-nvim = {
+                package = img-clip-nvim;
+                setup = "require('img-clip').setup {}";
+            };
 
             harpoon = {
                 package = harpoon;

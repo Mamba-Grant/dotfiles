@@ -40,7 +40,52 @@ local get_visual = function(args, parent)
     end
 end
 
-return {
+local greek_letters = {
+    a = "\\alpha", b = "\\beta", g = "\\gamma", d = "\\delta", ep = "\\epsilon",
+    z = "\\zeta", et = "\\eta", th = "\\theta", io = "\\iota", k = "\\kappa",
+    l = "\\lambda", m = "\\mu", nu = "\\nu", xi = "\\xi", omicron = "o",
+    pi = "\\pi", r = "\\rho", s = "\\sigma", ta = "\\tau", u = "\\upsilon",
+    phi = "\\phi", chi = "\\chi", psi = "\\psi", o = "\\omega",
+
+    -- Uppercase Greek letters (LaTeX format)
+    A = "\\Alpha", B = "\\Beta", G = "\\Gamma", D = "\\Delta", Ep = "\\Epsilon",
+    Z = "\\Zeta", Et = "\\Eta", Th = "\\Theta", Io = "\\Iota", K = "\\Kappa",
+    L = "\\Lambda", M = "\\Mu", Nu = "\\Nu", Xi = "\\Xi", Omicron = "O",
+    Pi = "\\Pi", R = "\\Rho", S = "\\Sigma", Ta = "\\Tau", U = "\\Upsilon",
+    Phi = "\\Phi", Chi = "\\Chi", Psi = "\\Psi", O = "\\Omega",
+}
+
+local snippets = {
+
+    s({trig = "(", dscr = "Add leftright ()"},
+        fmta("\\left( <> \\right)",
+            {d(1, get_visual) }
+        )
+    ),
+
+    s({trig = "{", dscr = "Add leftright {}"},
+        fmta("\\left\\{ <> \\right\\}",
+            {d(1, get_visual) }
+        )
+    ),
+
+    s({trig = "{", dscr = "Add leftright []"},
+        fmta("\\left\\[ <> \\right\\]",
+            {d(1, get_visual) }
+        )
+    ),
+
+    s({trig = "dint", dscr = "Integral with bounds"},
+        fmta("\\int_{<>}^{<>} <> \\,d<>",
+            { d(1), d(2), d(3, get_visual), d(4), }
+        )
+    ),
+
+    s({trig = "oint", dscr = "Integral with bounds"},
+        fmta("\\oint_{<>}^{<>} <> \\,d<>",
+            { d(1), d(2), d(3, get_visual), d(4), }
+        )
+    ),
 
     s({trig = "tii", dscr = "Expands 'tii' into LaTeX's textit{} command."},
         fmta("\\textit{<>}",
@@ -71,64 +116,107 @@ return {
             { f( function(_, snip) return snip.captures[1] end ), d(1, get_visual), }
         )
     ),
+
+    s({trig = "([^%a])rd", wordTrig = false, regTrig = true},
+        fmta(
+            "<>e^{<>}",
+            { f( function(_, snip) return snip.captures[1] end ), d(1, get_visual), }
+        )
+    ),
     
-    s({trig = '([^%a])ee', regTrig = true, wordTrig = false},
+    s({trig = '([^%a])ee', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
             "<>e^{<>}",
             { f( function(_, snip) return snip.captures[1] end ), d(1, get_visual) }
         )
     ),
 
-    s({trig = '([^%a])ff', regTrig = true, wordTrig = false},
+    s({trig = "([^%a])sqrt", wordTrig = false, regTrig = true},
+        fmta(
+            "<>\\sqrt{<>}",
+            { f( function(_, snip) return snip.captures[1] end ), d(1, get_visual), }
+        )
+    ),
+
+    s({trig = '([^%a])ff', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
             [[<>\frac{<>}{<>}]],
             { f( function(_, snip) return snip.captures[1] end ), i(1), i(2) }
         )
     ),
+
     s({trig = '([^%a])cl', regTrig = true, wordTrig = false},
         fmta(
 [[
 \begin{callout}{Solution:}
-<>
+    <>
 \end{callout}
 ]],
-            { f( function(_, snip) return snip.captures[1] end )}
+            { d(1, get_visual) }
         )
     ),
 
-    s({trig = '([^%a])ali', regTrig = true, wordTrig = false},
+    s({trig = '([^%a])aa', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
 [[
 \begin{align*}
-<>
+    <>
 \end{align*}
 ]],
-            { f( function(_, snip) return snip.captures[1] end ), }
+            { d(1, get_visual) }
         )
     ),
 
-    s({trig = '([^%a])gg', regTrig = true, wordTrig = false},
+    s({trig = '([^%a])gg', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
 [[
 \begin{gather*}
-<>
+    <>
 \end{gather*}
 ]],
-            { f( function(_, snip) return snip.captures[1] end ), }
+            { d(1, get_visual) }
         )
     ),
 
-    s({trig = '([^%a])gg', regTrig = true, wordTrig = false},
+        s({trig = '([^%a])bmat', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+        fmta( [[\begin{bmatrix} <> \end{bmatrix}]],
+            { d(1, get_visual) }
+        )
+    ),
+
+    s({trig = '([^%a])pmat', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+        fmta( [[\begin{pmatrix} <> \end{pmatrix}]],
+            { d(1, get_visual) }
+        )
+    ),
+
+    s({trig = '([^%a])mmat', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+        fmta( [[\begin{matrix} <> \end{matrix}]],
+            { d(1, get_visual) }
+        )
+    ),
+
+    s({trig = '([^%a])enum', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
 [[
-\begin{gather*}
+\begin{enumerate}[(1)]
 <>
-\end{gather*}
+\end{enumerate}
 ]],
-            { f( function(_, snip) return snip.captures[1] end ), }
+            { d(1, get_visual) }
         )
     ),
-
 
 
 }
+
+-- Add Greek letter snippets to the existing snippets table
+for name, latex_cmd in pairs(greek_letters) do
+    table.insert(snippets, 
+        s({ trig = '([^%a]);' .. name, regTrig = true, wordTrig = false, snippetType = "autosnippet" },
+          fmta([[ <> ]], { i(1, latex_cmd) })  -- Inline math mode
+        )
+    )
+end
+
+return snippets
