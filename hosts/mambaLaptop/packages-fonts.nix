@@ -9,6 +9,7 @@
             textual
             textual-dev
             numpy
+            scipy
             pyvisa
             pyvisa-sim
             qcodes
@@ -35,6 +36,7 @@ in {
         # fzf
         # fishPlugins.grc
         grc
+        gr-framework
         # starship
         baobab
         btrfs-progs
@@ -101,6 +103,9 @@ in {
         wl-clipboard
         wlogout
         xarchiver
+        # file-roller
+        xfce.thunar-dropbox-plugin
+        xfce.thunar-archive-plugin
         yad
         yt-dlp
 
@@ -133,7 +138,7 @@ in {
         font-awesome
         terminus_font
         google-fonts
-        (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
+        # (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     ];
 
     programs = {
