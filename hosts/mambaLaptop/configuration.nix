@@ -1,96 +1,369 @@
-using DataFrames
-using CSV
-using Statistics
-using Measurements
+# 💫 https://github.com/JaKooLit 💫 #
+# Main default config
 
-function remove_outliers(df, cols)
-    if length(df[!, "neutral_fall_seconds"]) == 1
-        return df
-    end
 
-    filtered_df = df  # Create a copy of df
-    for col in cols
-        μ = mean(filtered_df[!, col])  # Compute mean
-        σ = std(filtered_df[!, col])   # Compute standard deviation
-        filtered_df = filter(row -> abs(row[col] - μ) ≤ σ, filtered_df)  # Keep rows within 1 std dev
-    end
-    return filtered_df
-end
+# NOTE!!! : Packages and Fonts are configured in packages-&-fonts.nix
 
-# Load data from CSV files into a vector of DataFrames, removing outliers
-data::Vector{DataFrame} = DataFrame.(CSV.File.(readdir("raw_data/", join=true)))
-data = [remove_outliers(df, [:neutral_fall_seconds, :charged_rise_seconds]) for df in data]
 
-# Compute charges with uncertainty
-charges = map(data) do df
-    vf = 0.5e-3 / mean(df.neutral_fall_seconds)
-    vr = 0.5e-3 / mean(df.charged_rise_seconds)
+{ config, pkgs, host, username, options, lib, inputs, system, ...}: let
 
-    voltage_error = round(mean(df.voltage_V) .* 0.0009 .+ 0.2, sigdigits=1)
-    V = mean(df.voltage_V) ± voltage_error
-    d = mean(df.d) ± 0.001
-    E = V / d
+    inherit (import ./variables.nix) keyboardLayout;
 
-    p = mean(df.p) ± 1000
-    
-    a = @. sqrt((df.b / (2*p))^2 + (9 * df.eta * vf) / (2 * df.g * df.rho)) - df.b / (2df.p)
-    m = (4/3) * π * mean(a)^3 * mean(df.rho)
-    q = m * mean(df.g) * (vf + vr) / (E * vf)
+in {
+    imports = [
+        ./hardware-configuration.nix
+        ./users.nix
+        ./packages-fonts.nix
+        # ../../nvf/flake.nix
+        ../../modules/amd-drivers.nix
+        # ../../modules/nvidia-drivers.nix
+        ../../modules/nvidia-prime-drivers.nix
+        ../../modules/intel-drivers.nix
+        ../../modules/vm-guest-services.nix
+        ../../modules/local-hardware-clock.nix
+    ];
 
-    return q
-end
+    # set my own local nvim/nvf config as a system package
+    environment.systemPackages = [ inputs.nvf.defaultPackage.x86_64-linux ];
+    programs.nix-ld.enable = true;
 
-real_charge::Float64 = 1.602e-19
-number_of_measurements = length.(getproperty.(data, :neutral_fall_seconds))
+    # BOOT related stuff
+    boot = {
+        kernelPackages = pkgs.linuxPackages_latest; # Kernel
 
-# Extract values and uncertainties
-charge_values = Measurements.value.(charges)  # Extract central values (nominal charge)
-normalized_charge = charge_values ./ minimum(charge_values)
-systematic_uncertainties = Measurements.uncertainty.(charges)  # Extract propagated systematic uncertainties
-statistical_uncertainties = (charge_values ./ normalized_charge) ./ sqrt.(number_of_measurements)  # Statistical part
-z_scores = (charge_values ./ normalized_charge .- real_charge) ./ sqrt.(statistical_uncertainties.^2 + systematic_uncertainties.^2)
-chi_squared = sum(z_scores .^ 2)
+        kernelParams = [
+            "systemd.mask=systemd-vconsole-setup.service"
+            "systemd.mask=dev-tpmrm0.device" #this is to mask that stupid 1.5 mins systemd bug
+            "nowatchdog" 
+            "modprobe.blacklist=sp5100_tco" #watchdog for AMD
+            "modprobe.blacklist=iTCO_wdt" #watchdog for Intel
+        ];
 
-# Generate droplet labels: "A", "B", "C", ..., "Z", "AA", "AB", etc.
-droplet_labels = [
-    string(Char(65 + (i - 1) % 26)) * (i > 26 ? string(Char(65 + (i - 1) ÷ 26)) : "")
-    for i in 1:length(charges)
-]
+        # This is for OBS Virtual Cam Support
+        #kernelModules = [ "v4l2loopback" ];
+        #  extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
-# Display results including systematic and statistical uncertainties separately
-df_results::DataFrame = DataFrame(zip(
-    droplet_labels,
-    round.(charge_values, sigdigits=4),  # Charge in Coulombs
-    round.(normalized_charge, sigdigits=4),  # Number of charges per droplet
-    round.(statistical_uncertainties, sigdigits=4),  # Statistical Uncertainty
-    round.(systematic_uncertainties, sigdigits=4),  # Systematic Uncertainty
-    round.(z_scores, sigdigits=4)  # Z-Score
-))
+        initrd = { 
+            availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+            kernelModules = [ ];
+        };
 
-colnames = [
-    "",
-    "Charge (C)",
-    "# Charges",
-    "Statistical Uncertainty",
-    "Systematic Uncertainty",
-    "Z-Score"
-]
+        # Needed For Some Steam Games
+        #kernel.sysctl = {
+        #  "vm.max_map_count" = 2147483642;
+        #};
 
-rename!(df_results, Symbol.(colnames))
-println(df_results)
-println("\nΧ² = $chi_squared")
+        ## BOOT LOADERS: NOTE USE ONLY 1. either systemd or grub  
+        # Bootloader SystemD
+        loader.systemd-boot.enable = true;
 
-# Plotting with uncertainties
-using Plots
+        loader.efi = {
+            #efiSysMountPoint = "/efi"; #this is if you have separate /efi partition
+            canTouchEfiVariables = true;
+        };
 
-# Plot with xerr for uncertainty in number of charges and yerr for uncertainty in charge
-scatter(normalized_charge, Measurements.value.(charges), 
-        yerr=Measurements.uncertainty.(charges), 
-        xerr=statistical_uncertainties ./ normalized_charge,  # Uncertainty for normalized charges
-        xlabel="Number of Charges", 
-        ylabel="Charge (C)",
-        label="Measured Charges",
-        title="Number of Charges vs Charge (including uncertainty)",
-        legend=:topright)
+        loader.timeout = 5;    
 
-savefig("output_plot.png")  # Save the plot as a PNG image
+        # Bootloader GRUB
+        #loader.grub = {
+        #enable = true;
+        #  devices = [ "nodev" ];
+        #  efiSupport = true;
+        #  gfxmodeBios = "auto";
+        #  memtest86.enable = true;
+        #  extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
+        #  configurationName = "${host}";
+        #	 };
+
+        # Bootloader GRUB theme, configure below
+
+        ## -end of BOOTLOADERS----- ##
+
+        # Make /tmp a tmpfs
+        tmp = {
+            useTmpfs = false;
+            tmpfsSize = "30%";
+        };
+
+        # Appimage Support
+        binfmt.registrations.appimage = {
+            wrapInterpreterInShell = false;
+            interpreter = "${pkgs.appimage-run}/bin/appimage-run";
+            recognitionType = "magic";
+            offset = 0;
+            mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
+            magicOrExtension = ''\x7fELF....AI\x02'';
+        };
+
+        plymouth.enable = true;
+    };
+
+    # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
+    #distro-grub-themes = {
+    #  enable = true;
+    #  theme = "nixos";
+    #};
+
+    # Extra Module Options
+    drivers.amdgpu.enable = true;
+    drivers.intel.enable = true;
+    # drivers.nvidia.enable = true;
+    drivers.nvidia-prime = {
+        enable = false;
+        intelBusID = "";
+        nvidiaBusID = "";
+    };
+    vm.guest-services.enable = false;
+    local.hardware-clock.enable = false;
+
+    services.auto-cpufreq.enable = true;
+    services.auto-cpufreq.settings = {
+        battery = {
+            governor = "powersave";
+            turbo = "never";
+        };
+        charger = {
+            governor = "performance";
+            turbo = "auto";
+        };
+    };
+
+    # networking
+    networking.networkmanager.enable = true;
+    networking.hostName = "${host}";
+    networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+
+    # Set your time zone.
+    # services.automatic-timezoned.enable = true; #based on IP location
+
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    time.timeZone = "America/Chicago"; # Central Time Zone
+
+    # time.timeZone = "Asia/Seoul"; # Set local timezone
+
+    # Select internationalisation properties.
+    # i18n.defaultLocale = "en_US.UTF-6";
+    #
+    # i18n.extraLocaleSettings = {
+    #   LC_ADDRESS = "en_US.UTF-6";
+    #   LC_IDENTIFICATION = "en_US.UTF-6";
+    #   LC_MEASUREMENT = "en_US.UTF-6";
+    #   LC_MONETARY = "en_US.UTF-6";
+    #   LC_NAME = "en_US.UTF-6";
+    #   LC_NUMERIC = "en_US.UTF-6";
+    #   LC_PAPER = "en_US.UTF-6";
+    #   LC_TELEPHONE = "en_US.UTF-6";
+    #   LC_TIME = "en_US.UTF-6";
+    # };
+
+
+    # Services to start
+    services = {
+        xserver = {
+            enable = false;
+            xkb = {
+                layout = "${keyboardLayout}";
+                variant = "";
+            };
+        };
+
+        greetd = {
+            enable = true;
+            vt = 3;
+            settings = {
+                default_session = {
+                    user = username;
+                    command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
+                };
+            };
+        };
+
+        smartd = {
+            enable = false;
+            autodetect = true;
+        };
+
+        gvfs.enable = true;
+        tumbler.enable = true;
+
+        pipewire = {
+            enable = true;
+            alsa.enable = true;
+            alsa.support32Bit = true;
+            pulse.enable = true;
+            wireplumber.enable = true;
+        };
+
+        #pulseaudio.enable = false; #unstable
+        udev.enable = true;
+        envfs.enable = true;
+        dbus.enable = true;
+
+        fstrim = {
+            enable = true;
+            interval = "weekly";
+        };
+
+        libinput.enable = true;
+
+        rpcbind.enable = false;
+        nfs.server.enable = false;
+
+        openssh.enable = true;
+        flatpak.enable = false;
+
+        blueman.enable = true;
+
+        #hardware.openrgb.enable = true;
+        #hardware.openrgb.motherboard = "amd";
+
+        fwupd.enable = true;
+
+        upower.enable = true;
+
+        gnome.gnome-keyring.enable = true;
+
+        #printing = {
+        #  enable = false;
+        #  drivers = [
+        # pkgs.hplipWithPlugin
+        #  ];
+        #};
+
+        #avahi = {
+        #  enable = true;
+        #  nssmdns4 = true;
+        #  openFirewall = true;
+        #};
+
+        #ipp-usb.enable = true;
+
+        #syncthing = {
+        #  enable = false;
+        #  user = "${username}";
+        #  dataDir = "/home/${username}";
+        #  configDir = "/home/${username}/.config/syncthing";
+        #};
+
+    };
+
+    systemd.services.flatpak-repo = {
+        path = [ pkgs.flatpak ];
+        script = ''
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        '';
+    };
+
+    # zram
+    zramSwap = {
+        enable = true;
+        priority = 100;
+        memoryPercent = 30;
+        swapDevices = 1;
+        algorithm = "zstd";
+    };
+
+    powerManagement = {
+        enable = true;
+        cpuFreqGovernor = "schedutil";
+    };
+
+    #hardware.sane = {
+    #  enable = true;
+    #  extraBackends = [ pkgs.sane-airscan ];
+    #  disabledDefaultBackends = [ "escl" ];
+    #};
+
+    # Extra Logitech Support
+    hardware.logitech.wireless.enable = false;
+    hardware.logitech.wireless.enableGraphical = false;
+
+    # Bluetooth
+    hardware = {
+        bluetooth = {
+            enable = true;
+            powerOnBoot = true;
+            settings = {
+                General = {
+                    Enable = "Source,Sink,Media,Socket";
+                    Experimental = true;
+                };
+            };
+        };
+    };
+
+    # Security / Polkit
+    security.rtkit.enable = true;
+    security.polkit.enable = true;
+    security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (
+        subject.isInGroup("users")
+          && (
+            action.id == "org.freedesktop.login1.reboot" ||
+            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+            action.id == "org.freedesktop.login1.power-off" ||
+            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+          )
+        )
+      {
+        return polkit.Result.YES;
+      }
+    })
+    '';
+    security.pam.services.swaylock = {
+        text = ''
+      auth include login
+        '';
+    };
+
+    # Cachix, Optimization settings and garbage collection automation
+    nix = {
+        settings = {
+            auto-optimise-store = true;
+            experimental-features = [
+                "nix-command"
+                "flakes"
+            ];
+            substituters = [ "https://hyprland.cachix.org" ];
+            trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+        };
+        gc = {
+            automatic = true;
+            dates = "weekly";
+            options = "--delete-older-than 7d";
+        };
+    };
+
+    # Virtualization / Containers
+    virtualisation.libvirtd.enable = false;
+    virtualisation.podman = {
+        enable = false;
+        dockerCompat = false;
+        defaultNetwork.settings.dns_enabled = false;
+    };
+
+    # OpenGL
+    hardware.graphics = {
+        enable = true;
+    };
+
+    console.keyMap = "${keyboardLayout}";
+
+    # For Electron apps to use wayland
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+    # Open ports in the firewall.
+    # networking.firewall.allowedTCPPorts = [ ... ];
+    # networking.firewall.allowedUDPPorts = [ ... ];
+    # Or disable the firewall altogether.
+    # networking.firewall.enable = false;
+
+    # This value determines the NixOS release from which the default
+    # settings for stateful data, like file locations and database versions
+    # on your system were taken. It‘s perfectly fine and recommended to leave
+    # this value at the release version of the first install of this system.
+    # Before changing this value read the documentation for this option
+    # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+    system.stateVersion = "24.11"; # Did you read the comment?
+}

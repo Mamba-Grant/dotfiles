@@ -145,6 +145,16 @@ local snippets = {
         )
     ),
 
+    s({ trig='beg', name='begin/end', dscr='begin/end environment (generic)'},
+    fmta([[
+    \begin{<>}
+    <>
+    \end{<>}
+    ]],
+    { i(1), i(0), rep(1) }
+    ), { condition = tex.in_text, show_condition = tex.in_text }),
+
+
     s({trig = '([^%a])cl', regTrig = true, wordTrig = false},
         fmta(
 [[
@@ -196,16 +206,20 @@ local snippets = {
         )
     ),
 
-    s({trig = '([^%a])enum', regTrig = true, wordTrig = false, snippetType="autosnippet"},
-        fmta(
-[[
-\begin{enumerate}[(1)]
-<>
-\end{enumerate}
-]],
-            { d(1, get_visual) }
-        )
+    s({ trig = "-i", name = "itemize", dscr = "bullet points (itemize)" },
+	fmta([[ 
+    \begin{itemize}
+    \item <>
+    \end{itemize}
+    ]],
+	{ c(1, { i(0), sn(nil, fmta(
+		[[
+        [<>] <>
+        ]],
+		{ i(1), i(0) })) })
+    }
     ),
+    { condition = tex.in_text, show_condition = tex.in_text }),
 
 
 }
