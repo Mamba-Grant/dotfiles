@@ -27,6 +27,12 @@ local types = require("luasnip.util.types")
 local events = require("luasnip.util.events")
 local su = require("luasnip.util.util")
 
+-- https://ejmastnak.com/tutorials/vim-latex/luasnip/
+local in_mathzone = function()
+  -- The `in_mathzone` function requires the VimTeX plugin
+  return vim.fn['vimtex#syntax#in_mathzone']() == 1
+end
+
 -- This is the `get_visual` function I've been talking about.
 -- ----------------------------------------------------------------------------
 -- Summary: When `LS_SELECT_RAW` is populated with a visual selection, the function
@@ -57,7 +63,7 @@ local greek_letters = {
 
 local snippets = {
 
-    s({trig = "(", dscr = "Add leftright ()"},
+    s({trig = "pp", dscr = "Add leftright parenthesis", snippetType="autosnippet"},
         fmta("\\left( <> \\right)",
             {d(1, get_visual) }
         )
@@ -77,13 +83,13 @@ local snippets = {
 
     s({trig = "dint", dscr = "Integral with bounds"},
         fmta("\\int_{<>}^{<>} <> \\,d<>",
-            { d(1), d(2), d(3, get_visual), d(4), }
+            { i(1), i(2), d(3, get_visual), i(4), }
         )
     ),
 
     s({trig = "oint", dscr = "Integral with bounds"},
         fmta("\\oint_{<>}^{<>} <> \\,d<>",
-            { d(1), d(2), d(3, get_visual), d(4), }
+            { i(1), i(2), d(3, get_visual), i(4), }
         )
     ),
 
@@ -124,6 +130,13 @@ local snippets = {
         )
     ),
     
+    s({trig = "([^%a])sr", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "<>^{2}<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1) }
+        )
+    ),
+    
     s({trig = '([^%a])ee', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
             "<>e^{<>}",
@@ -138,12 +151,40 @@ local snippets = {
         )
     ),
 
-    s({trig = '([^%a])ff', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+    s({trig = "ff", snippetType="autosnippet"},
         fmta(
-            [[<>\frac{<>}{<>}]],
-            { f( function(_, snip) return snip.captures[1] end ), i(1), i(2) }
-        )
+            "\\frac{<>}{<>}",
+            { d(1, get_visual), i(2), }),
+        {  }
     ),
+
+    s({
+        trig = "([%w]+)%/",   -- Capture one or more alphanumeric characters before a slash
+        regTrig = true,       -- Enable regex triggering
+        snippetType = "autosnippet",
+        wordTrig = false,     -- Allow triggering even if not at a word boundary
+    },
+        fmta(
+            "\\frac{<>}{<>}", 
+            {
+                f(function(_, snip)
+                    return snip.captures[1]  -- Use the captured text (word/number) as the numerator
+                end),
+                i(1)  -- Cursor for the denominator
+            }
+        ),
+        {  }  -- Ensure the snippet only expands in a math zone
+    ),
+
+
+    s({trig = "-e", dscr='enumerate environment', snippetType="autosnippet"},
+    fmta([[
+    \begin{enumerate}[(a)]
+        \item <>
+    \end{enumerate}
+    ]],
+    { d(1, get_visual) }
+    )),
 
     s({ trig='beg', name='begin/end', dscr='begin/end environment (generic)'},
     fmta([[
@@ -152,19 +193,19 @@ local snippets = {
     \end{<>}
     ]],
     { i(1), i(0), rep(1) }
-    ), { condition = tex.in_text, show_condition = tex.in_text }),
-
+    )),
 
     s({trig = '([^%a])cl', regTrig = true, wordTrig = false},
-        fmta(
-[[
-\begin{callout}{Solution:}
+    fmta(
+    [[
+    \begin{callout}{Solution:}
+
     <>
-\end{callout}
-]],
-            { d(1, get_visual) }
-        )
-    ),
+
+    \end{callout}
+    ]],
+    { d(1, get_visual) }
+    )),
 
     s({trig = '([^%a])aa', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
@@ -206,31 +247,21 @@ local snippets = {
         )
     ),
 
-    s({ trig = "-i", name = "itemize", dscr = "bullet points (itemize)" },
-	fmta([[ 
-    \begin{itemize}
-    \item <>
-    \end{itemize}
-    ]],
-	{ c(1, { i(0), sn(nil, fmta(
-		[[
-        [<>] <>
-        ]],
-		{ i(1), i(0) })) })
-    }
-    ),
-    { condition = tex.in_text, show_condition = tex.in_text }),
-
-
 }
 
 -- Add Greek letter snippets to the existing snippets table
 for name, latex_cmd in pairs(greek_letters) do
     table.insert(snippets, 
-        s({ trig = '([^%a]);' .. name, regTrig = true, wordTrig = false, snippetType = "autosnippet" },
-          fmta([[ <> ]], { i(1, latex_cmd) })  -- Inline math mode
+        s({ trig = ';' .. name, snippetType = "autosnippet" },
+          { t(latex_cmd), i(0) }  -- Insert text and place cursor at the end
         )
     )
 end
+
+table.insert(snippets,
+    s({ trig = "([A-Za-z])(%d)", regTrig = true, wordTrig = false },
+      fmta("<>_{<>}", { f(function(_, snip) return snip.captures[1] end), f(function(_, snip) return snip.captures[2] end) })
+    )
+)
 
 return snippets

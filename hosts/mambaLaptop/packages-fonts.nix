@@ -76,9 +76,11 @@ in {
         hypridle # requires unstable channel
         imagemagick 
         inxi
+        nss_latest
         jq
-        kitty
+        # kitty
         foot
+        blink
         libsForQt5.qtstyleplugin-kvantum #kvantum
         networkmanagerapplet
         nwg-look
@@ -92,6 +94,9 @@ in {
         kdePackages.qt6ct
         kdePackages.qtwayland
         kdePackages.qtstyleplugin-kvantum #kvantum
+        gtklp
+        # print-manager
+        system-config-printer
         rofi-wayland
         slurp
         swappy
@@ -102,8 +107,8 @@ in {
         wallust
         wl-clipboard
         wlogout
-        xarchiver
-        # file-roller
+        # xarchiver
+        file-roller
         xfce.thunar-dropbox-plugin
         xfce.thunar-archive-plugin
         yad
@@ -138,7 +143,7 @@ in {
         font-awesome
         terminus_font
         google-fonts
-        # (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
+        (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     ];
 
     programs = {

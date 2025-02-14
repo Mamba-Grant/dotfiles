@@ -21,6 +21,7 @@ in {
         ../../modules/intel-drivers.nix
         ../../modules/vm-guest-services.nix
         ../../modules/local-hardware-clock.nix
+        # ../../modules/default.nix
     ];
 
     # set my own local nvim/nvf config as a system package
@@ -223,18 +224,18 @@ in {
 
         gnome.gnome-keyring.enable = true;
 
-        #printing = {
-        #  enable = false;
-        #  drivers = [
-        # pkgs.hplipWithPlugin
-        #  ];
-        #};
+        printing = {
+            enable = true;
+            # drivers = [
+            #     pkgs.hplipWithPlugin
+            # ];
+        };
 
-        #avahi = {
-        #  enable = true;
-        #  nssmdns4 = true;
-        #  openFirewall = true;
-        #};
+        avahi = {
+            enable = true;
+            nssmdns4 = true;
+            openFirewall = true;
+        };
 
         #ipp-usb.enable = true;
 
