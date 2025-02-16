@@ -9,6 +9,6 @@
     imports = [
         # ./firefox.nix
         # ./hyprland.nix
-        # ./dotfiles.nix
+        ./dotfiles.nix
     ];
 }
