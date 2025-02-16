@@ -28,16 +28,8 @@ in {
 
     environment.systemPackages = (with pkgs; [
         # System Packages
-        # fish
-        # fishPlugins.done
-        # fishPlugins.fzf-fish
-        # fishPlugins.forgit
-        # fishPlugins.hydro
-        # fzf
-        # fishPlugins.grc
         grc
         gr-framework
-        # starship
         baobab
         btrfs-progs
         clang
@@ -61,7 +53,6 @@ in {
 
         fastfetch
         (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-        #ranger
 
         # Hyprland Stuff
         ags # note: defined at flake.nix to download and install ags v1    
@@ -154,13 +145,11 @@ in {
             xwayland.enable = true;
         };
 
-
         waybar.enable = true;
         hyprlock.enable = true;
         firefox.enable = true;
         git.enable = true;
         nm-applet.indicator = true;
-        #neovim.enable = true;
 
         thunar.enable = true;
         thunar.plugins = with pkgs.xfce; [
