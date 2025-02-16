@@ -134,6 +134,7 @@ in {
         font-awesome
         terminus_font
         google-fonts
+        nerdfonts
         (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     ];
 

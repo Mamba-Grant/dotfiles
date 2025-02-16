@@ -306,11 +306,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-DRljqBS7KgKWSfu+E8ikHKZ387EBmoXtoxzxqGJC+y4=",
-        "path": "/nix/store/bq3n7wmqgwrvid77b0ddr75y8n9139rl-source/nvf",
+        "path": "/nix/store/3lcjfmb9dnrycljsg04n57w270jg0nar-source/nvf",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/bq3n7wmqgwrvid77b0ddr75y8n9139rl-source/nvf",
+        "path": "/nix/store/3lcjfmb9dnrycljsg04n57w270jg0nar-source/nvf",
         "type": "path"
       }
     },
