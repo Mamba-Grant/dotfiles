@@ -8,9 +8,18 @@
         home-manager.inputs.nixpkgs.follows = "nixpkgs";
         ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
         nvf.url = "./nvf/"; # Local flake for nvf
+        hyprland.url = "github:hyprwm/Hyprland";
+        hyprland-plugins = {
+            url = "github:hyprwm/hyprland-plugins";
+            # inputs.nixpkgs.follows = "hyprland";
+        };
         firefox-gnome-theme = {
             url = "github:rafaelmardojai/firefox-gnome-theme";
             flake = false;
+        };
+        anyrun = {
+            url = "github:Kirottu/anyrun";
+            inputs.nixpkgs.follows = "nixpkgs";
         };
     };
 

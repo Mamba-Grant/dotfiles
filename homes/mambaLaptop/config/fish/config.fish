@@ -4,11 +4,10 @@ function fish_prompt
 end
 
 if status is-interactive
-    # Commands to run in interactive sessions can go here
     set fish_greeting
 end
 
-alias nrb='IMPURITY_PATH=$(pwd) sudo --preserve-env=IMPURITY_PATH nixos-rebuild switch --flake . --impure'
+alias nrb='sudo nixos-rebuild switch --flake ~/dotfiles/.'
 
 starship init fish | source
 if test -f ~/.cache/ags/user/colorschemes/sequences
