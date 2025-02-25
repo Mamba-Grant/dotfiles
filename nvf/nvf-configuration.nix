@@ -28,7 +28,7 @@
         snippets = {
             luasnip.enable = true;
             luasnip.setupOpts.enable_autosnippets = true;
-            luasnip.loaders = "require('luasnip.loaders.from_lua').lazy_load({paths = '~/.dotfiles/nvf/LuaSnipSnippets/'})";
+            luasnip.loaders = "require('luasnip.loaders.from_lua').lazy_load({paths = '~/dotfiles/nvf/LuaSnipSnippets/'})";
             luasnip.setupOpts = { 
                 store_selection_keys = "<Tab>"; 
             };

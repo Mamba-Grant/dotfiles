@@ -195,7 +195,7 @@ local snippets = {
     { i(1), i(0), rep(1) }
     )),
 
-    s({trig = '([^%a])cl', regTrig = true, wordTrig = false},
+    s({trig = 'cl',},
     fmta(
     [[
     \begin{callout}{Solution:}

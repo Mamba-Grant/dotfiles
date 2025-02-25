@@ -4,14 +4,15 @@
     inputs = {
         nixpkgs.url = "nixpkgs/nixos-24.11";
         distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
-        home-manager.url = "github:nix-community/home-manager";
-        home-manager.inputs.nixpkgs.follows = "nixpkgs";
+        home-manager = {
+            url = "github:nix-community/home-manager";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
         ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
         nvf.url = "./nvf/"; # Local flake for nvf
         hyprland.url = "github:hyprwm/Hyprland";
         hyprland-plugins = {
             url = "github:hyprwm/hyprland-plugins";
-            # inputs.nixpkgs.follows = "hyprland";
         };
         firefox-gnome-theme = {
             url = "github:rafaelmardojai/firefox-gnome-theme";
@@ -55,9 +56,25 @@
                         home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
                         home-manager.users.mamba = import homes/mambaLaptop/home.nix;
+                        home-manager.backupFileExtension = "old";
                     }
                 ];
             };
+        };
+        homeConfigurations."mamba@mambaLaptop" = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+            modules = [
+                {
+                    wayland.windowManager.hyprland = {
+                        enable = true;
+                        # set the flake package
+                        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+                        portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+                    };
+                }
+                # ...
+            ];
         };
     };
 }
