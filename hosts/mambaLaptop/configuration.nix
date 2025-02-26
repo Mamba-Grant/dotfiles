@@ -20,6 +20,7 @@ in {
         ../../modules/vm-guest-services.nix
         ../../modules/local-hardware-clock.nix
     ];
+    programs.xfconf.enable = true;
 
     # set my own local nvim/nvf config as a system package
     environment.systemPackages = [ inputs.nvf.defaultPackage.x86_64-linux ];

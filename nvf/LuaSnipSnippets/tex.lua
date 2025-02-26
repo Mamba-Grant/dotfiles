@@ -29,8 +29,11 @@ local su = require("luasnip.util.util")
 
 -- https://ejmastnak.com/tutorials/vim-latex/luasnip/
 local in_mathzone = function()
-  -- The `in_mathzone` function requires the VimTeX plugin
-  return vim.fn['vimtex#syntax#in_mathzone']() == 1
+  -- Check if inside the 'align*' environment
+  local align_start_pos = vim.fn['vimtex#env#is_inside']('align*')
+  
+  -- If the returned position is not {0, 0}, we're inside 'align*'
+  return align_start_pos[1] > 0 and align_start_pos[2] > 0 or vim.fn['vimtex#syntax#in_mathzone']() == 1
 end
 
 -- This is the `get_visual` function I've been talking about.
@@ -130,17 +133,31 @@ local snippets = {
         )
     ),
     
-    s({trig = "([^%a])sr", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+    s({trig = "([%a]?)sr", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
             "<>^{2}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         )
     ),
-    
-    s({trig = '([^%a])ee', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+
+    s({trig = "([%a]?)cb", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
-            "<>e^{<>}",
-            { f( function(_, snip) return snip.captures[1] end ), d(1, get_visual) }
+            "<>^{3}<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1) }
+        )
+    ),
+
+    s({trig = "([%a]?)pw", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "<> \\times 10^{<>}<>",
+            { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
+        )
+    ),
+    --
+    s({trig = '([%a]?)ee', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+        fmta(
+            "<>^{<>}<>",
+            { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
         )
     ),
 
@@ -173,7 +190,7 @@ local snippets = {
                 i(1)  -- Cursor for the denominator
             }
         ),
-        {  }  -- Ensure the snippet only expands in a math zone
+        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
 
 
@@ -207,7 +224,7 @@ local snippets = {
     { d(1, get_visual) }
     )),
 
-    s({trig = '([^%a])aa', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+    s({trig = 'aa', regTrig = true, wordTrig = false, snippetType="autosnippet"},
         fmta(
 [[
 \begin{align*}
