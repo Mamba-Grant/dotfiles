@@ -138,6 +138,7 @@ local snippets = {
             "<>^{2}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         )
+        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
 
     s({trig = "([%a]?)cb", wordTrig = false, regTrig = true, snippetType="autosnippet"},
@@ -145,6 +146,15 @@ local snippets = {
             "<>^{3}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         )
+        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
+    ),
+
+    s({trig = '([%a]?)rd', regTrig = true, wordTrig = false, snippetType="autosnippet"},
+        fmta(
+            "<>^{<>}<>",
+            { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
+        )
+        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
 
     s({trig = "([%a]?)pw", wordTrig = false, regTrig = true, snippetType="autosnippet"},
@@ -152,15 +162,9 @@ local snippets = {
             "<> \\times 10^{<>}<>",
             { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
         )
+        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
     --
-    s({trig = '([%a]?)ee', regTrig = true, wordTrig = false, snippetType="autosnippet"},
-        fmta(
-            "<>^{<>}<>",
-            { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
-        )
-    ),
-
     s({trig = "([^%a])sqrt", wordTrig = false, regTrig = true},
         fmta(
             "<>\\sqrt{<>}",
