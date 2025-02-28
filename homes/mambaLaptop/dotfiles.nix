@@ -15,5 +15,8 @@
         "waybar".source = ./config/waybar;
         "nwg-look".source = ./config/nwg-look;
         "libreoffice".source = ./config/libreoffice;
+        "Thunar".source = ./config/Thunar;
+        "zathura".source = ./config/zathura;
+        "rofi".source = ./config/rofi;
     };
 }

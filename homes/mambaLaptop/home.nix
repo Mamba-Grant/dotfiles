@@ -7,6 +7,7 @@ in { pkgs, ... }: {
         # ./cachix.nix
         ## Dotfiles (manual)
         ./dotfiles.nix
+            ./gtk.nix
         # Stuff
         # ./ags.nix
         # ./anyrun.nix
@@ -44,13 +45,13 @@ in { pkgs, ... }: {
     xdg.userDirs = { createDirectories = true; };
     # xdg.mime.enable = true;
 
-        gtk = {
-            font = {
-                name = "Rubik";
-                package = pkgs.google-fonts.override { fonts = [ "Rubik" ]; };
-                size = 11;
-            };
-        };
+        # gtk = {
+        #     font = {
+        #         name = "Rubik";
+        #         package = pkgs.google-fonts.override { fonts = [ "Rubik" ]; };
+        #         size = 11;
+        #     };
+        # };
 
         xdg.mimeApps = {
             enable = true;
