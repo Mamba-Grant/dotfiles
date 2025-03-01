@@ -14,7 +14,10 @@
         "hypr".source = ./config/hypr;
         "waybar".source = ./config/waybar;
         "nwg-look".source = ./config/nwg-look;
-        "libreoffice".source = ./config/libreoffice;
+        # "libreoffice" = {
+        #     source = ./config/libreoffice;
+        #     force = true;
+        # };
         "Thunar".source = ./config/Thunar;
         "zathura".source = ./config/zathura;
         "rofi".source = ./config/rofi;

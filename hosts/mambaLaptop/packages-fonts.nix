@@ -93,6 +93,7 @@ in {
         swappy
         flameshot
         swaynotificationcenter
+        dbus
         swww
         unzip
         wallust
@@ -111,7 +112,9 @@ in {
         obsidian
         dropbox
         zathura
-        libreoffice-qt6-fresh
+    libreoffice-qt-fresh
+    hunspell
+        jdk # needed by libreoffice-qt6-fresh
         fend
         zotero
 

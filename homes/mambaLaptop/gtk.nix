@@ -31,10 +31,10 @@
         gtk-menu-images = true;
         gtk-enable-event-sounds = true;
         gtk-enable-input-feedback-sounds = false;
-        gtk-xft-antialias = true;
-        gtk-xft-hinting = true;
-        gtk-xft-hintstyle = "hintslight";
-        gtk-xft-rgba = "rgb";
+        # gtk-xft-antialias = true;
+        # gtk-xft-hinting = true;
+        # gtk-xft-hintstyle = "hintslight";
+        # gtk-xft-rgba = "rgb";
         gtk-application-prefer-dark-theme = false;
       };
     };
