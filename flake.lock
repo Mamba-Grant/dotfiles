@@ -1068,12 +1068,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-JDRdizLd7QjFfomJhF+68WUOUZ9IF3/iTa8f1lIDZk0=",
-        "path": "/nix/store/hpqciiyy3mcqq7ssaa1vw53j4gar395k-source/nvf",
+        "narHash": "sha256-zBMTE+z6xqFsiJ/gPwflSMG71UQzQvC8kRgL1IKAIDI=",
+        "path": "/nix/store/5h94zyp0v2hsfksg49fa1mbpc98958i7-source/nvf",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/hpqciiyy3mcqq7ssaa1vw53j4gar395k-source/nvf",
+        "path": "/nix/store/5h94zyp0v2hsfksg49fa1mbpc98958i7-source/nvf",
         "type": "path"
       }
     },

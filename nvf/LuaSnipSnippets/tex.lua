@@ -27,7 +27,6 @@ local types = require("luasnip.util.types")
 local events = require("luasnip.util.events")
 local su = require("luasnip.util.util")
 
--- https://ejmastnak.com/tutorials/vim-latex/luasnip/
 local in_mathzone = function()
   -- Check if inside the 'align*' environment
   local align_start_pos = vim.fn['vimtex#env#is_inside']('align*')
@@ -137,7 +136,7 @@ local snippets = {
         fmta(
             "<>^{2}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
-        )
+        ),
         { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
 
@@ -145,7 +144,7 @@ local snippets = {
         fmta(
             "<>^{3}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
-        )
+        ),
         { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
 
@@ -153,7 +152,7 @@ local snippets = {
         fmta(
             "<>^{<>}<>",
             { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
-        )
+        ),
         { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
 
@@ -161,7 +160,7 @@ local snippets = {
         fmta(
             "<> \\times 10^{<>}<>",
             { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
-        )
+        ),
         { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
     ),
     --
