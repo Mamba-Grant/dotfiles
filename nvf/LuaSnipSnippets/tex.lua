@@ -166,31 +166,31 @@ local snippets = {
 
     s({trig = "([%a]?)cos", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
-            "<>\\cos(<>)<>",
-            { f( function(_, snip) return snip.captures[1] end ), i(1), i(0) }
+            "<>\\cos<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1) }
         ),
         { condition=in_mathzone }
     ),
 
     s({trig = "([%a]?)sin", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
-            "<>\\sin(<>)<>",
-            { f( function(_, snip) return snip.captures[1] end ), i(1), i(0) }
+            "<>\\sin<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1)}
         ),
         { condition=in_mathzone }
     ),
 
     s({trig = "([%a]?)tan", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
-            "<>\\tan(<>)<>",
-            { f( function(_, snip) return snip.captures[1] end ), i(1), i(0) }
+            "<>\\tan<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1) }
         ),
         { condition=in_mathzone }
     ),
 
     s({trig = "([%a]?)perp", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
-            "\\perp<>",
+            "<>\\perp<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         ),
         { condition=in_mathzone }
@@ -198,7 +198,7 @@ local snippets = {
 
     s({trig = "([%a]?)para", wordTrig = false, regTrig = true, snippetType="autosnippet"},
         fmta(
-            "\\parallel<>",
+            "<>\\parallel<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         ),
         { condition=in_mathzone }

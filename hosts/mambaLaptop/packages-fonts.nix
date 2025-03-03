@@ -101,10 +101,11 @@ in {
         wlogout
         # xarchiver
         file-roller
-        xfce.thunar-dropbox-plugin
-        xfce.thunar-archive-plugin
+        # xfce.thunar-dropbox-plugin
+        # xfce.thunar-archive-plugin
         yad
         yt-dlp
+        usbutils
 
         # Applications
         vesktop
@@ -160,6 +161,7 @@ in {
             exo
             mousepad
             thunar-archive-plugin
+            thunar-dropbox-plugin
             thunar-volman
             tumbler
         ];
