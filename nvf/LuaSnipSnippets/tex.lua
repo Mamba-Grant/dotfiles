@@ -101,8 +101,8 @@ local snippets = {
         )
     ),
 
-    s({trig = "bf", dscr = "Expands 'bf' into LaTeX's textbf{} command."},
-        fmta("\\textbf{<>}",
+    s({trig = "bf", dscr = "Expands 'bf' into LaTeX's mathbf{} command."},
+        fmta("\\mathbf{<>}",
             { d(1, get_visual), }
         )
     ),
@@ -137,7 +137,7 @@ local snippets = {
             "<>^{2}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         ),
-        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
+        { condition=in_mathzone }
     ),
 
     s({trig = "([%a]?)cb", wordTrig = false, regTrig = true, snippetType="autosnippet"},
@@ -145,7 +145,7 @@ local snippets = {
             "<>^{3}<>",
             { f( function(_, snip) return snip.captures[1] end ), i(1) }
         ),
-        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
+        { condition=in_mathzone }
     ),
 
     s({trig = '([%a]?)rd', regTrig = true, wordTrig = false, snippetType="autosnippet"},
@@ -153,7 +153,7 @@ local snippets = {
             "<>^{<>}<>",
             { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
         ),
-        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
+        { condition=in_mathzone }
     ),
 
     s({trig = "([%a]?)pw", wordTrig = false, regTrig = true, snippetType="autosnippet"},
@@ -161,9 +161,50 @@ local snippets = {
             "<> \\times 10^{<>}<>",
             { f(function(_, snip) return snip.captures[1] end), i(1), i(0) }
         ),
-        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
+        { condition=in_mathzone }
     ),
-    --
+
+    s({trig = "([%a]?)cos", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "<>\\cos(<>)<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1), i(0) }
+        ),
+        { condition=in_mathzone }
+    ),
+
+    s({trig = "([%a]?)sin", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "<>\\sin(<>)<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1), i(0) }
+        ),
+        { condition=in_mathzone }
+    ),
+
+    s({trig = "([%a]?)tan", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "<>\\tan(<>)<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1), i(0) }
+        ),
+        { condition=in_mathzone }
+    ),
+
+    s({trig = "([%a]?)perp", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "\\perp<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1) }
+        ),
+        { condition=in_mathzone }
+    ),
+
+    s({trig = "([%a]?)para", wordTrig = false, regTrig = true, snippetType="autosnippet"},
+        fmta(
+            "\\parallel<>",
+            { f( function(_, snip) return snip.captures[1] end ), i(1) }
+        ),
+        { condition=in_mathzone }
+    ),
+
+
     s({trig = "([^%a])sqrt", wordTrig = false, regTrig = true},
         fmta(
             "<>\\sqrt{<>}",
@@ -193,9 +234,26 @@ local snippets = {
                 i(1)  -- Cursor for the denominator
             }
         ),
-        { condition=in_mathzone }  -- Ensure the snippet only expands in a math zone
+        { condition=in_mathzone }
     ),
 
+    s({
+        trig = "([%w]+)%hat",   -- Capture one or more alphanumeric characters before "hat" 
+        regTrig = true,
+        snippetType = "autosnippet",
+        wordTrig = false,     -- Allow triggering even if not at a word boundary
+    },
+        fmta(
+            "\\hat{<>}<>", 
+            {
+                f(function(_, snip)
+                    return snip.captures[1]  -- Use the captured text (word/number) as the numerator
+                end),
+                i(1)  -- Cursor for outside
+            }
+        ),
+        { condition=in_mathzone }
+    ),
 
     s({trig = "-e", dscr='enumerate environment', snippetType="autosnippet"},
     fmta([[
