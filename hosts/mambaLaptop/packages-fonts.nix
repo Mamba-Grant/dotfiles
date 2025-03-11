@@ -29,6 +29,7 @@ in {
     environment.systemPackages = (with pkgs; [
         # System Packages
         grc
+        teams-for-linux
         gr-framework
         baobab
         btrfs-progs
@@ -46,7 +47,6 @@ in {
         libnotify
         openssl #required by Rainbow borders
         pciutils
-        vim
         wget
         xdg-user-dirs
         xdg-utils
@@ -69,13 +69,11 @@ in {
         inxi
         nss_latest
         jq
-        # kitty
         foot
         blink
         libsForQt5.qtstyleplugin-kvantum #kvantum
         networkmanagerapplet
         nwg-look
-        #nvtopPackages.intel	 
         pamixer
         pavucontrol
         playerctl
@@ -86,11 +84,10 @@ in {
         kdePackages.qtwayland
         kdePackages.qtstyleplugin-kvantum #kvantum
         gtklp
-        # print-manager
         system-config-printer
         rofi-wayland
         slurp
-        swappy
+        loupe
         flameshot
         swaynotificationcenter
         dbus
@@ -99,17 +96,13 @@ in {
         wallust
         wl-clipboard
         wlogout
-        # xarchiver
         file-roller
-        # xfce.thunar-dropbox-plugin
-        # xfce.thunar-archive-plugin
         yad
         yt-dlp
         usbutils
 
         # Applications
         vesktop
-        ungoogled-chromium
         obsidian
         dropbox
         zathura
@@ -118,6 +111,7 @@ in {
         jdk # needed by libreoffice-qt6-fresh
         fend
         zotero
+        obs-studio
 
         # Misc/Development
         tectonic

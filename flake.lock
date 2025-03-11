@@ -1069,11 +1069,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-Wmk/D0Nrl7+MiKtvBceWBvJIMurWUYELU0eEe3BJJZY=",
-        "path": "/nix/store/j2bkgdg6r2pk0l32a6x5ykspfv00jrg0-source/nvf",
+        "path": "/nix/store/ai65wfph99im9q6bqs3dkaac45pyvqxi-source/nvf",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/j2bkgdg6r2pk0l32a6x5ykspfv00jrg0-source/nvf",
+        "path": "/nix/store/ai65wfph99im9q6bqs3dkaac45pyvqxi-source/nvf",
         "type": "path"
       }
     },
