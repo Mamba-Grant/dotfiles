@@ -89,6 +89,8 @@ in {
         slurp
         loupe
         flameshot
+        distrobox
+        docker
         swaynotificationcenter
         dbus
         swww

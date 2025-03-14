@@ -125,9 +125,10 @@
             enableTreesitter = true;
 
             nix.enable = true;
+            julia.lsp.package= null; # I disable this since I have julia installed on its own
             julia.enable = true;
             julia.lsp.enable = true;
-            julia.treesitter.enable = true;
+            # julia.treesitter.enable = true;
             python.enable = true;
             python.format.enable = true;
             python.format.type = "ruff";
