@@ -89,6 +89,7 @@ in {
         slurp
         loupe
         flameshot
+        gwyddion
         distrobox
         docker
         swaynotificationcenter
