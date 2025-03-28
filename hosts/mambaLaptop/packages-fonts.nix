@@ -90,6 +90,7 @@ in {
         loupe
         flameshot
         gwyddion
+        inkscape
         distrobox
         docker
         swaynotificationcenter
