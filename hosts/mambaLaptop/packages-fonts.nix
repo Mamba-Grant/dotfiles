@@ -53,6 +53,9 @@ in {
 
         fastfetch
         (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+        looking-glass-client
+        virt-manager
+        quickemu
 
         # Hyprland Stuff
         ags # note: defined at flake.nix to download and install ags v1    
@@ -163,8 +166,6 @@ in {
             thunar-volman
             tumbler
         ];
-
-        virt-manager.enable = false;
 
         #steam = {
         #  enable = true;

@@ -22,9 +22,13 @@
             url = "github:Kirottu/anyrun";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+        NixVirt = {
+            url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
-    outputs = inputs @ { self, nixpkgs, home-manager, distro-grub-themes, ... }: let
+    outputs = inputs @ { self, nixpkgs, home-manager, distro-grub-themes, NixVirt, ... }: let
         # System and host variables
         system = "x86_64-linux";
         host = "default";

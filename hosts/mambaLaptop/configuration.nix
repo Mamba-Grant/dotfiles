@@ -336,11 +336,37 @@ in {
     };
 
     # Virtualization / Containers
-    virtualisation.libvirtd.enable = false;
-    virtualisation.podman = {
-        enable = false;
-        dockerCompat = false;
-        defaultNetwork.settings.dns_enabled = false;
+
+    # virtualisation.libvirt.enable = true;
+    # virtualisation.libvirt.swtpm.enable = true;
+
+    # virtualisation.podman = {
+    #     enable = false;
+    #     dockerCompat = false;
+    #     defaultNetwork.settings.dns_enabled = false;
+    # };
+
+    systemd.tmpfiles.rules = [ # creates the looking glass shm file
+        "f /dev/shm/looking-glass 0660 ${username} qemu-libvirtd -"
+    ];
+
+    programs.virt-manager.enable = true;
+    users.groups.libvirtd.members = ["${username}"];
+
+    virtualisation.libvirtd = {
+        enable = true;
+        qemu = {
+            package = pkgs.qemu_kvm;
+            runAsRoot = true;
+            swtpm.enable = true;
+            ovmf = {
+                enable = true;
+                packages = [(pkgs.OVMF.override {
+                    secureBoot = true;
+                    tpmSupport = true;
+                }).fd];
+            };
+        };
     };
 
     # OpenGL
