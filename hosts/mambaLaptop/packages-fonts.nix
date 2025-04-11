@@ -77,6 +77,7 @@ in {
         libsForQt5.qtstyleplugin-kvantum #kvantum
         networkmanagerapplet
         nwg-look
+        kdePackages.dolphin
         pamixer
         pavucontrol
         playerctl
@@ -158,15 +159,15 @@ in {
         git.enable = true;
         nm-applet.indicator = true;
 
-        thunar.enable = true;
-        thunar.plugins = with pkgs.xfce; [
-            exo
-            mousepad
-            thunar-archive-plugin
-            thunar-dropbox-plugin
-            thunar-volman
-            tumbler
-        ];
+        # thunar.enable = true;
+        # thunar.plugins = with pkgs.xfce; [
+        #     exo
+        #     mousepad
+        #     thunar-archive-plugin
+        #     thunar-dropbox-plugin
+        #     thunar-volman
+        #     tumbler
+        # ];
 
         #steam = {
         #  enable = true;

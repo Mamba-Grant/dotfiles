@@ -8,13 +8,13 @@ in { pkgs, ... }: {
         ## Dotfiles (manual)
         ./dotfiles.nix
             ./gtk.nix
-        # Stuff
+            # Stuff
         # ./ags.nix
         # ./anyrun.nix
         # ./browser.nix
         # ./dconf.nix
         # ./hyprland.nix
-        # ./mimelist.nix
+        ./mimelist.nix
         # ./packages.nix
         # ./starship.nix
         # ./sway.nix
@@ -43,7 +43,7 @@ in { pkgs, ... }: {
     };
 
     xdg.userDirs = { createDirectories = true; };
-    # xdg.mime.enable = true;
+    xdg.mime.enable = true;
 
         # gtk = {
         #     font = {
@@ -53,12 +53,12 @@ in { pkgs, ... }: {
         #     };
         # };
 
-        xdg.mimeApps = {
-            enable = true;
-            defaultApplications = {
-                "x-scheme-handler/terminal" = "foot.desktop";
-            };
-        };
+        # xdg.mimeApps = {
+        #     enable = true;
+        #     defaultApplications = {
+        #         "x-scheme-handler/terminal" = "foot.desktop";
+        #     };
+        # };
 
         xdg.configFile."xfce4/helpers.rc".text = ''
   TerminalEmulator=foot
