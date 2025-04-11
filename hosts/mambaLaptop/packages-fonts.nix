@@ -132,6 +132,7 @@ in {
 
     # FONTS
     fonts.packages = with pkgs; [
+        corefonts
         noto-fonts
         fira-code
         jetbrains-mono
