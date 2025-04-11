@@ -1105,11 +1105,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-zfm3dJNzD9XABe0trwtZswWWXWIUqAAaQ4RvhjWejIg=",
-        "path": "/nix/store/2bpv8nxad26kicvg3g26rzmcg15w4vzn-source/nvf",
+        "path": "/nix/store/r8bwjxadk877cciq8d4m3mvbd0x9j5rw-source/nvf",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/2bpv8nxad26kicvg3g26rzmcg15w4vzn-source/nvf",
+        "path": "/nix/store/r8bwjxadk877cciq8d4m3mvbd0x9j5rw-source/nvf",
         "type": "path"
       }
     },
