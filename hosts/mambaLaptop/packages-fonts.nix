@@ -133,6 +133,7 @@ in {
 
     # FONTS
     fonts.packages = with pkgs; [
+        vistafonts
         corefonts
         noto-fonts
         fira-code
