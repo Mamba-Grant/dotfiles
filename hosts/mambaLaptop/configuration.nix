@@ -132,6 +132,9 @@ in {
     networking.networkmanager.enable = true;
     networking.hostName = "${host}";
     networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+    networking.networkmanager.wifi.powersave = true;
+    systemd.services."NetworkManager-wait-online".enable = false; # make network go after startup to save 5-6 seconds
+
 
     # Set your time zone.
     # services.automatic-timezoned.enable = true; #based on IP location

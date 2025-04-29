@@ -93,6 +93,7 @@ in {
         slurp
         loupe
         flameshot
+        wezterm
         gwyddion
         inkscape
         distrobox
