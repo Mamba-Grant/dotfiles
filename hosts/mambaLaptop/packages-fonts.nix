@@ -8,9 +8,11 @@
         with ps; [
             textual
             textual-dev
+            bokeh
             numpy
             scipy
             pyvisa
+            pyvisa-py
             pyvisa-sim
             qcodes
             seaborn
@@ -19,6 +21,7 @@
             iminuit
             pyquery # needed for hyprland-dots Weather script
             jupyterlab
+            zeroconf
         ]
     );
 
