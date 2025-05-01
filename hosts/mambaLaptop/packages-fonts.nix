@@ -7,6 +7,7 @@
         ps:
         with ps; [
             textual
+            textual[syntax]
             textual-dev
             bokeh
             numpy
@@ -128,11 +129,12 @@ in {
         # Misc/Development
         tectonic
         julia
+        devenv
 
         #waybar  # if wanted experimental next line
         #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ]) ++ [
-            python-packages
+            # python-packages
         ];
 
     # FONTS

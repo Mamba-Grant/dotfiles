@@ -67,7 +67,6 @@
         };
         homeConfigurations."mamba@mambaLaptop" = home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
             modules = [
                 {
                     wayland.windowManager.hyprland = {

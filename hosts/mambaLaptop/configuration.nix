@@ -1,9 +1,7 @@
 # 💫 https://github.com/JaKooLit 💫 #
 # Main default config
 
-
 # NOTE!!! : Packages and Fonts are configured in packages-&-fonts.nix
-
 
 { config, pkgs, host, username, options, lib, inputs, system, ...}: let
 
