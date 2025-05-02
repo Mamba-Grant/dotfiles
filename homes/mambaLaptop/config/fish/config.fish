@@ -1,3 +1,7 @@
+function nrb
+    sudo nixos-rebuild switch --flake ~/dotfiles
+end
+
 #function fish_prompt
 #  set_color cyan; echo (pwd)
 #  set_color green; echo '> '

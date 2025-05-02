@@ -120,6 +120,7 @@ in {
         dropbox
         zathura
     libreoffice-qt-fresh
+        wpsoffice
     hunspell
         jdk # needed by libreoffice-qt6-fresh
         fend
