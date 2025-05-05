@@ -126,6 +126,7 @@ in {
         fend
         zotero
         obs-studio
+        davinci-resolve-studio
 
         # Misc/Development
         tectonic
