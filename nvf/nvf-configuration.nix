@@ -124,6 +124,20 @@
                 action = "<c-\\><c-n><cmd>:ToggleTerm<CR>";
             }
 
+            {
+                key = "<leader>X";
+                mode = "n";
+                silent = true;
+                action = "<cmd>lua require('notebook-navigator').run_cell()<cr>";
+            }
+
+            {
+                key = "<leader>x";
+                mode = "n";
+                silent = true;
+                action = "<cmd>lua require('notebook-navigator').run_and_move()<cr>";
+            }
+
         ];
 
         languages = {
@@ -167,6 +181,50 @@
 
             iron = {
                 package = iron-nvim;
+                setup = ''
+local iron = require("iron.core")
+local view = require("iron.view")
+local common = require("iron.fts.common")
+
+iron.setup {
+  config = {
+    scratch_repl = true,
+    repl_definition = {
+      sh = {
+        command = {"fish"}
+      },
+      python = {
+        command = { "ipython" },  -- or { "ipython", "--no-autoindent" }
+        format = common.bracketed_paste_python,
+        block_dividers = { "# %%", "#%%" },
+      }
+    },
+    repl_filetype = function(bufnr, ft)
+      return ft
+    end,
+    repl_open_cmd = "vertical botright 80 split"
+  },
+  highlight = { italic = true },
+  ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+}
+
+vim.keymap.set('n', '<space>\\', '<cmd>IronRepl<cr>')
+                '';
+            };
+
+            notebook-navigator = {
+                package = NotebookNavigator-nvim;
+                setup = "require('notebook-navigator').setup {}";
+            };
+
+            mini-hipatterns = {
+                package = mini-hipatterns;
+                setup = "require('mini.hipatterns').setup {}";
+            };
+
+            mini-comment = {
+                package = mini-comment;
+                setup = "require('mini.comment').setup {}";
             };
 
             jupytext = {
