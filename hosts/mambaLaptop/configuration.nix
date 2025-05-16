@@ -321,6 +321,7 @@ in {
     # Cachix, Optimization settings and garbage collection automation
     nix = {
         settings = {
+            trusted-users = [ "root" "mamba" ];
             auto-optimise-store = true;
             experimental-features = [
                 "nix-command"

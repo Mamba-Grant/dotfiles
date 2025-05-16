@@ -10,8 +10,8 @@
 
         # extraPackages = [pkgs.texlab pkgs.vimPlugins.nvim-lastplace pkgs.vimPlugins.vimtex];
         terminal.toggleterm.enable = true;
-        terminal.toggleterm.mappings.open = "<c-t>";
-        terminal.toggleterm.setupOpts.direction = "horizontal";
+        terminal.toggleterm.mappings.open = "<c-\\>";
+        terminal.toggleterm.setupOpts.direction = "float";
         statusline.lualine.enable = true;
         telescope.enable = true;
         autocomplete.nvim-cmp.enable = true;
@@ -117,18 +117,23 @@
                 action = "<c-\><c-n>";
             }
 
+            {
+                key = "<c-\\>";
+                mode = "t";
+                silent = true;
+                action = "<c-\\><c-n><cmd>:ToggleTerm<CR>";
+            }
+
 
         ];
 
         languages = {
             enableLSP = true;
             enableTreesitter = true;
-
             nix.enable = true;
             julia.lsp.package= null; # I disable this since I have julia installed on its own
             julia.enable = true;
             julia.lsp.enable = true;
-            # julia.treesitter.enable = true;
             python.enable = true;
             python.format.enable = true;
             python.format.type = "ruff";
@@ -159,6 +164,14 @@
             harpoon = {
                 package = harpoon;
                 setup = "require('harpoon').setup {}";
+            };
+
+            iron = {
+                package = iron-nvim;
+            };
+
+            jupytext = {
+                package = jupytext-nvim;
             };
         };
 
