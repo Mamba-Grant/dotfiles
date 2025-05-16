@@ -8,7 +8,7 @@
             style = "dark";
         };
 
-        # extraPackages = [pkgs.texlab pkgs.vimPlugins.nvim-lastplace pkgs.vimPlugins.vimtex];
+        extraPackages = with pkgs; [ python312Packages.jupytext ];
         terminal.toggleterm.enable = true;
         terminal.toggleterm.mappings.open = "<c-\\>";
         terminal.toggleterm.setupOpts.direction = "float";
@@ -124,7 +124,6 @@
                 action = "<c-\\><c-n><cmd>:ToggleTerm<CR>";
             }
 
-
         ];
 
         languages = {
@@ -172,6 +171,7 @@
 
             jupytext = {
                 package = jupytext-nvim;
+                setup = "require('jupytext').setup {}";
             };
         };
 
