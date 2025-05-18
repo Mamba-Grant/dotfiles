@@ -194,7 +194,7 @@ iron.setup {
         command = {"fish"}
       },
       python = {
-        command = { "ipython" },  -- or { "ipython", "--no-autoindent" }
+        command = { "python3" },  -- or { "ipython", "--no-autoindent" }
         format = common.bracketed_paste_python,
         block_dividers = { "# %%", "#%%" },
       }
@@ -230,6 +230,11 @@ vim.keymap.set('n', '<space>\\', '<cmd>IronRepl<cr>')
             jupytext = {
                 package = jupytext-nvim;
                 setup = "require('jupytext').setup {}";
+            };
+
+            nvim-highlight-colors = {
+                package = nvim-highlight-colors;
+                setup = "require('nvim-highlight-colors').setup {}";
             };
         };
 
