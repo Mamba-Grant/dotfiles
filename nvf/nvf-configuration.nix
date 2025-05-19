@@ -151,6 +151,9 @@
             python.format.enable = true;
             python.format.type = "ruff";
             python.lsp.server = "pyright";
+            markdown.enable = true;
+            # markdown.extensions.markview-nvim.enable = true;
+            markdown.extensions.render-markdown-nvim.enable = true;
         };
 
         extraPlugins = with pkgs.vimPlugins; {
