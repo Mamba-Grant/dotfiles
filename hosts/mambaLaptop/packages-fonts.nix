@@ -6,23 +6,23 @@
     python-packages = pkgs.python3.withPackages (
         ps:
         with ps; [
-            textual
-            textual[syntax]
-            textual-dev
-            bokeh
+            # textual
+            # textual[syntax]
+            # textual-dev
+            # bokeh
             numpy
             scipy
-            pyvisa
-            pyvisa-py
-            pyvisa-sim
-            qcodes
-            seaborn
+            # pyvisa
+            # pyvisa-py
+            # pyvisa-sim
+            # qcodes
+            # seaborn
             matplotlib
-            requests
+            # requests
             iminuit
-            pyquery # needed for hyprland-dots Weather script
+            # pyquery # needed for hyprland-dots Weather script
             jupyterlab
-            zeroconf
+            # zeroconf
         ]
     );
 
@@ -113,6 +113,8 @@ in {
         yad
         yt-dlp
         usbutils
+        openconnect
+        hidapi
 
         # Applications
         vesktop

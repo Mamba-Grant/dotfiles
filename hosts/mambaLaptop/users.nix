@@ -13,6 +13,7 @@ in
             isNormalUser = true;
             description = "${gitUsername}";
             extraGroups = [
+                "usbtmc"
                 "networkmanager"
                 "wheel"
                 "libvirtd"

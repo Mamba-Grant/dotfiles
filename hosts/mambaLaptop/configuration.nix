@@ -38,7 +38,7 @@ in {
         ];
 
         # This is for OBS Virtual Cam Support
-        #kernelModules = [ "v4l2loopback" ];
+        kernelModules = [ "v4l2loopback" "usbtmc" ];
         #  extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
         initrd = { 
@@ -354,6 +354,20 @@ in {
 
     programs.virt-manager.enable = true;
     users.groups.libvirtd.members = ["${username}"];
+    users.groups.usbtmc = {};
+
+  # Add udev rules for NI-VISA USB Raw devices (proper NI-VISA format)
+    services.udev.extraRules = ''
+  # Keithley 2450 permissions
+  SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", MODE="0666", GROUP="usbtmc", SYMLINK+="keithley2450"
+
+  # Generic USBTMC support
+  SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="fe", ATTR{bInterfaceSubClass}=="03", MODE="0666", GROUP="usbtmc"
+
+  # Optional: give user access
+  SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", OWNER="mamba", MODE="0666"
+    '';
+
 
     virtualisation.libvirtd = {
         enable = true;
