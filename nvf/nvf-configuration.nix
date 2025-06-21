@@ -8,7 +8,7 @@
             style = "dark";
         };
 
-        extraPackages = with pkgs; [ python312Packages.jupytext ];
+        extraPackages = with pkgs; [ python312Packages.jupytext carbon-now-cli ];
         terminal.toggleterm.enable = true;
         terminal.toggleterm.mappings.open = "<c-\\>";
         terminal.toggleterm.setupOpts.direction = "float";
@@ -239,6 +239,17 @@ vim.keymap.set('n', '<space>\\', '<cmd>IronRepl<cr>')
                 package = nvim-highlight-colors;
                 setup = "require('nvim-highlight-colors').setup {}";
             };
+
+            # vim-carbon-now-sh = {
+            #     package = vim-carbon-now-sh;
+            #     setup = "require('carbon-now').setup {}";
+            # };
+
+            # screenshot = {
+            #     package = screenshot-nvim;
+            #     setup = "require('screenshot-nvim').setup {clipboard=true}";
+            # };
+
         };
 
     };

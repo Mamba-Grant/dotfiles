@@ -47,5 +47,5 @@ in { pkgs, ... }: {
             };
         };
         home.stateVersion =
-            "24.11"; # this must be the version at which you have started using the program
+            "25.05";
     }

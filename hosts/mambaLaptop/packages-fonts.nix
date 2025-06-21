@@ -21,7 +21,9 @@
             # requests
             iminuit
             # pyquery # needed for hyprland-dots Weather script
+            jupyter-core
             jupyterlab
+            jupyter-console
             # zeroconf
         ]
     );
@@ -33,8 +35,9 @@ in {
     environment.systemPackages = (with pkgs; [
         # System Packages
         grc
+        ani-cli
         teams-for-linux
-        gr-framework
+        # gr-framework
         baobab
         btrfs-progs
         clang
@@ -121,9 +124,9 @@ in {
         obsidian
         dropbox
         zathura
-    libreoffice-qt-fresh
+        libreoffice-qt-fresh
         wpsoffice
-    hunspell
+        hunspell
         jdk # needed by libreoffice-qt6-fresh
         fend
         zotero
@@ -138,7 +141,7 @@ in {
         #waybar  # if wanted experimental next line
         #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ]) ++ [
-            # python-packages
+            python-packages
         ];
 
     # FONTS
@@ -146,14 +149,13 @@ in {
         vistafonts
         corefonts
         noto-fonts
-        fira-code
-        jetbrains-mono
+        # jetbrains-mono
         noto-fonts-cjk-sans
         font-awesome
         terminus_font
         google-fonts
-        nerdfonts
-        (nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.fira-code
     ];
 
     programs = {

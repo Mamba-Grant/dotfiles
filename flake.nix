@@ -1,8 +1,8 @@
 {
-    description = "Mamba's First Hyprland Flake - Created using JaKooLit's dotfiles";
+    description = "Mamba's First Hyprland Flake - Created using JaKooLit's dotfiles as a base";
 
     inputs = {
-        nixpkgs.url = "nixpkgs/nixos-24.11";
+        nixpkgs.url = "nixpkgs/nixos-25.05";
         distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
         home-manager = {
             url = "github:nix-community/home-manager";
