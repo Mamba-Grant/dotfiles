@@ -10,7 +10,8 @@ in {
             enable = true;
             settings = {
                 main = {
-                    font = "jetbrains mono:size=11:line-height=16px";
+                    # font = "jetbrains mono:size=11:line-height=16px";
+                    font = "JetBrainsMonoNerdFont";
                     pad = "12x12";
                 };
                 colors = {

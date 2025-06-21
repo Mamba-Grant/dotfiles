@@ -36,7 +36,7 @@ in {
         # System Packages
         grc
         ani-cli
-        teams-for-linux
+        # teams-for-linux
         # gr-framework
         baobab
         btrfs-progs
@@ -156,6 +156,7 @@ in {
         google-fonts
         nerd-fonts.jetbrains-mono
         nerd-fonts.fira-code
+        nerd-fonts.dejavu-sans-mono
     ];
 
     programs = {
