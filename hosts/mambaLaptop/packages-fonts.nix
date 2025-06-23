@@ -149,11 +149,12 @@ in {
         vistafonts
         corefonts
         noto-fonts
-        # jetbrains-mono
         noto-fonts-cjk-sans
         font-awesome
         terminus_font
         google-fonts
+        fira-code
+        jetbrains-mono
         nerd-fonts.jetbrains-mono
         nerd-fonts.fira-code
         nerd-fonts.dejavu-sans-mono
