@@ -8,6 +8,7 @@ in { pkgs, ... }: {
             ## Dotfiles (manual)
             ./dotfiles.nix
             ./gtk.nix
+            ./mpv.nix
             # Stuff
             # ./ags.nix
             # ./anyrun.nix

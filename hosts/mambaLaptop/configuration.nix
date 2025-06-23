@@ -25,6 +25,17 @@ in {
     programs.nix-ld.enable = true;
     virtualisation.docker.enable = true;
 
+    services.postgresql = {
+        enable = true;
+        package = pkgs.postgresql_15;  # or another version like postgresql_14
+        dataDir = "/var/lib/postgresql/15";  # Change version to match above
+        authentication = ''
+    local all all trust
+    host all all 127.0.0.1/32 trust
+    host all all ::1/128 trust
+        '';
+    };
+
     # BOOT related stuff
     boot = {
         kernelPackages = pkgs.linuxPackages_latest; # Kernel
@@ -47,9 +58,9 @@ in {
         };
 
         # Needed For Some Steam Games
-        #kernel.sysctl = {
-        #  "vm.max_map_count" = 2147483642;
-        #};
+        kernel.sysctl = {
+         "vm.max_map_count" = 2147483642;
+        };
 
         ## BOOT LOADERS: NOTE USE ONLY 1. either systemd or grub  
         # Bootloader SystemD
@@ -61,21 +72,6 @@ in {
         };
 
         loader.timeout = 5;    
-
-        # Bootloader GRUB
-        #loader.grub = {
-        #enable = true;
-        #  devices = [ "nodev" ];
-        #  efiSupport = true;
-        #  gfxmodeBios = "auto";
-        #  memtest86.enable = true;
-        #  extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
-        #  configurationName = "${host}";
-        #	 };
-
-        # Bootloader GRUB theme, configure below
-
-        ## -end of BOOTLOADERS----- ##
 
         # Make /tmp a tmpfs
         tmp = {
@@ -95,12 +91,6 @@ in {
 
         plymouth.enable = true;
     };
-
-    # GRUB Bootloader theme. Of course you need to enable GRUB above.. duh!
-    #distro-grub-themes = {
-    #  enable = true;
-    #  theme = "nixos";
-    #};
 
     # Extra Module Options
     drivers.amdgpu.enable = true;
@@ -135,28 +125,8 @@ in {
 
 
     # Set your time zone.
-    # services.automatic-timezoned.enable = true; #based on IP location
-
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     time.timeZone = "America/Chicago"; # Central Time Zone
-
-    # time.timeZone = "Asia/Seoul"; # Set local timezone
-
-    # Select internationalisation properties.
-    # i18n.defaultLocale = "en_US.UTF-6";
-    #
-    # i18n.extraLocaleSettings = {
-    #   LC_ADDRESS = "en_US.UTF-6";
-    #   LC_IDENTIFICATION = "en_US.UTF-6";
-    #   LC_MEASUREMENT = "en_US.UTF-6";
-    #   LC_MONETARY = "en_US.UTF-6";
-    #   LC_NAME = "en_US.UTF-6";
-    #   LC_NUMERIC = "en_US.UTF-6";
-    #   LC_PAPER = "en_US.UTF-6";
-    #   LC_TELEPHONE = "en_US.UTF-6";
-    #   LC_TIME = "en_US.UTF-6";
-    # };
-
 
     # Services to start
     services = {
@@ -215,9 +185,6 @@ in {
 
         blueman.enable = true;
 
-        #hardware.openrgb.enable = true;
-        #hardware.openrgb.motherboard = "amd";
-
         fwupd.enable = true;
 
         upower.enable = true;
@@ -226,9 +193,6 @@ in {
 
         printing = {
             enable = true;
-            # drivers = [
-            #     pkgs.hplipWithPlugin
-            # ];
         };
 
         avahi = {
@@ -236,16 +200,6 @@ in {
             nssmdns4 = true;
             openFirewall = true;
         };
-
-        #ipp-usb.enable = true;
-
-        #syncthing = {
-        #  enable = false;
-        #  user = "${username}";
-        #  dataDir = "/home/${username}";
-        #  configDir = "/home/${username}/.config/syncthing";
-        #};
-
     };
 
     systemd.services.flatpak-repo = {
@@ -268,12 +222,6 @@ in {
         enable = true;
         cpuFreqGovernor = "schedutil";
     };
-
-    #hardware.sane = {
-    #  enable = true;
-    #  extraBackends = [ pkgs.sane-airscan ];
-    #  disabledDefaultBackends = [ "escl" ];
-    #};
 
     # Extra Logitech Support
     hardware.logitech.wireless.enable = false;
@@ -337,17 +285,6 @@ in {
         };
     };
 
-    # Virtualization / Containers
-
-    # virtualisation.libvirt.enable = true;
-    # virtualisation.libvirt.swtpm.enable = true;
-
-    # virtualisation.podman = {
-    #     enable = false;
-    #     dockerCompat = false;
-    #     defaultNetwork.settings.dns_enabled = false;
-    # };
-
     systemd.tmpfiles.rules = [ # creates the looking glass shm file
         "f /dev/shm/looking-glass 0660 ${username} qemu-libvirtd -"
     ];
@@ -394,12 +331,6 @@ in {
 
     # For Electron apps to use wayland
     environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-    # Open ports in the firewall.
-    # networking.firewall.allowedTCPPorts = [ ... ];
-    # networking.firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    # networking.firewall.enable = false;
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions

@@ -7,7 +7,7 @@
         "ags".source = ./config/ags;
         "foot".source = ./config/foot;
         "fuzzel".source = ./config/fuzzel;
-        "mpv".source = ./config/mpv;
+        # "mpv".source = ./config/mpv;
         "thorium-flags.conf".source = ./config/thorium-flags.conf;    
         "starship.toml".source = ./config/starship.toml;
         "hypr".source = ./config/hypr;
