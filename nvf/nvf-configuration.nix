@@ -18,12 +18,14 @@
         useSystemClipboard = true;
         spellcheck.enable = true;
         spellcheck.ignoredFiletypes = ["toggleterm" "python" "julia" "nix"];
+        # comments.comment-nvim.enable = true;
 
         utility.motion.leap.enable = true;
 
         mini.surround.enable = true;
         mini.pairs.enable = true;
         mini.move.enable = true;
+        mini.comment.enable = true;
 
         snippets = {
             luasnip.enable = true;
@@ -140,20 +142,56 @@
 
         ];
 
+        lsp.formatOnSave = true;
+        visuals.indent-blankline.enable = true;
+
         languages = {
             enableLSP = true;
             enableTreesitter = true;
-            nix.enable = true;
-            julia.lsp.package= null; # I disable this since I have julia installed on its own
-            julia.enable = true;
-            julia.lsp.enable = true;
-            python.enable = true;
-            python.format.enable = true;
-            python.format.type = "ruff";
-            python.lsp.server = "pyright";
-            markdown.enable = true;
-            # markdown.extensions.markview-nvim.enable = true;
-            markdown.extensions.render-markdown-nvim.enable = true;
+            enableFormat = true;
+
+            nix = {
+                enable = true;
+                lsp.enable = true;
+            };
+
+            julia = {
+                lsp.package= null; # I disable this since I have julia installed on its own
+                enable = true;
+                lsp.enable = true;
+            };
+
+            python = {
+                enable = true;
+                format.enable = true;
+                format.type = "ruff";
+                lsp.server = "pyright";
+            };
+
+            markdown = {
+                enable = true;
+                extensions.render-markdown-nvim.enable = true;
+            };
+
+            ts = {
+                enable = true;
+                lsp.enable = true;
+                treesitter.enable = true;
+                format.enable = true;
+                extensions.ts-error-translator.enable = true;
+            };
+
+            tailwind = {
+                enable = true;
+                lsp.enable = true;
+            };
+
+            svelte = {
+                enable = true;
+                lsp.enable = true;
+                treesitter.enable = true;
+                format.enable = true;
+            };
         };
 
         extraPlugins = with pkgs.vimPlugins; {
@@ -239,6 +277,21 @@ vim.keymap.set('n', '<space>\\', '<cmd>IronRepl<cr>')
                 package = nvim-highlight-colors;
                 setup = "require('nvim-highlight-colors').setup {}";
             };
+
+            # vim-svelte = {
+            #     package = vim-svelte;
+            #     setup = "require('vim-svelte').setup {}";
+            # };
+
+            nvim-ts-context-commentstring = {
+                package = nvim-ts-context-commentstring;
+                setup = "require('ts_context_commentstring').setup {}";
+            };
+
+            # nvim-ts-autotag = {
+            #     package = nvim-ts-autotag;
+            #     setup = "require('nvim-ts-autotag').setup {}";
+            # };
 
             # vim-carbon-now-sh = {
             #     package = vim-carbon-now-sh;

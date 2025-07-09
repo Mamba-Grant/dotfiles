@@ -126,7 +126,8 @@ in {
 
     # Set your time zone.
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    time.timeZone = "America/Chicago"; # Central Time Zone
+    # time.timeZone = "America/Chicago"; # Central Time Zone
+    time.timeZone = "America/Anchorage"; # Alaska Trip
 
     # Services to start
     services = {

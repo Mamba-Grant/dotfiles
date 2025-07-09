@@ -11,9 +11,9 @@
             pkgs.mpv-unwrapped.wrapper {
                 scripts = with pkgs.mpvScripts; [
                     # uosc
-                    mpv-osc-modern
+                    # mpv-osc-modern
                     # modernx
-                    # modernz
+                    modernz
                     inhibit-gnome
                     eisa01.simplehistory
                     # eisa01.smartskip
