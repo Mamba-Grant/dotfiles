@@ -28,6 +28,7 @@
     mini.pairs.enable = true;
     mini.move.enable = true;
     mini.comment.enable = true;
+    mini.icons.enable = true;
 
     snippets = {
       luasnip.enable = true;
@@ -48,6 +49,10 @@
       swapfile = false;
       backup = false;
       relativenumber = true;
+    };
+
+    binds = {
+      whichKey.enable = true;
     };
 
     keymaps = [
@@ -202,6 +207,18 @@
       };
     };
 
+    # lazy.plugins."mini-hipatterns" = {
+    #   package = "mini-hipatterns";
+    #   setupOpts = ''
+    #     local nn = require("notebook-navigator")
+    #     require("mini.hipatterns").setup({
+    #       highlighters = {
+    #         cells = nn.minihipatterns_spec
+    #       }
+    #     })
+    #   '';
+    # };
+
     extraPlugins = with pkgs.vimPlugins; {
       nvim-lastplace = {
         package = nvim-lastplace;
@@ -242,7 +259,7 @@
                   command = {"fish"}
                 },
                 python = {
-                  command = { "python3" },  -- or { "ipython", "--no-autoindent" }
+                  command = { "ipython", "--no-autoindent" },  -- or { "ipython", "--no-autoindent" } or { "python3" }
                   format = common.bracketed_paste_python,
                   block_dividers = { "# %%", "#%%" },
                 }
@@ -263,11 +280,6 @@
       notebook-navigator = {
         package = NotebookNavigator-nvim;
         setup = "require('notebook-navigator').setup {}";
-      };
-
-      mini-hipatterns = {
-        package = mini-hipatterns;
-        setup = "require('mini.hipatterns').setup {}";
       };
 
       mini-comment = {

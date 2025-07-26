@@ -27,7 +27,7 @@ in {
   programs.xfconf.enable = true;
 
   # set my own local nvim/nvf config as a system package
-  environment.systemPackages = [inputs.nvf.defaultPackage.x86_64-linux];
+  # environment.systemPackages = [inputs.nvf.defaultPackage.x86_64-linux];
   programs.nix-ld.enable = true;
   virtualisation.docker.enable = true;
 

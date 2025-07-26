@@ -9,7 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1
-    nvf.url = "./nvf/"; # Local flake for nvf
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -26,6 +25,11 @@
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # nvf.url = "./nvf/"; # Local flake for nvf
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -35,6 +39,7 @@
     flake-utils,
     distro-grub-themes,
     NixVirt,
+    nixvim,
     ...
   }: let
     # System and host variables
@@ -82,6 +87,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.mamba = import homes/mambaLaptop/home.nix;
             home-manager.backupFileExtension = "old";
+            home-manager.sharedModules = [nixvim.homeManagerModules.nixvim];
           }
         ];
       };
