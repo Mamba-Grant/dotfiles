@@ -24,6 +24,8 @@ in {
     (with pkgs; [
       # System Packages
       grc
+      github-desktop
+      gparted
       ani-cli
       baobab
       btrfs-progs

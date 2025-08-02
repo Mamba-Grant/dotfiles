@@ -102,11 +102,11 @@ in {
   drivers.amdgpu.enable = true;
   drivers.intel.enable = true;
   # drivers.nvidia.enable = true;
-  drivers.nvidia-prime = {
-    enable = false;
-    intelBusID = "";
-    nvidiaBusID = "";
-  };
+  # drivers.nvidia-prime = {
+  #   enable = true;
+  #   intelBusID = "";
+  #   nvidiaBusID = "";
+  # };
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
 
@@ -291,10 +291,10 @@ in {
     };
   };
 
-  systemd.tmpfiles.rules = [
-    # creates the looking glass shm file
-    "f /dev/shm/looking-glass 0660 ${username} qemu-libvirtd -"
-  ];
+  # systemd.tmpfiles.rules = [
+  #   # creates the looking glass shm file
+  #   "f /dev/shm/looking-glass 0660 ${username} qemu-libvirtd -"
+  # ];
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["${username}"];
@@ -331,9 +331,16 @@ in {
     };
   };
 
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = ["nvidia"];
+  hardware.nvidia.open = true;
+  hardware.nvidia.prime = {
+    offload = {
+      enable = lib.mkOverride 990 true;
+      enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true; # Provides `nvidia-offload` command.
+    };
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
   };
 
   console.keyMap = "${keyboardLayout}";

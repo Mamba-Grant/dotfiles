@@ -1,6 +1,5 @@
 {
   description = "Mamba's First Hyprland Flake - Created using JaKooLit's dotfiles as a base";
-
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-25.05";
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
@@ -31,7 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
   outputs = inputs @ {
     self,
     nixpkgs,
@@ -46,7 +44,6 @@
     system = "x86_64-linux";
     host = "default";
     username = "mamba";
-
     # Import pkgs with system and custom configuration
     pkgs = import nixpkgs {
       inherit system;
@@ -60,27 +57,24 @@
       default = vesta;
       vesta = vesta;
     };
-
     apps = {
       default = flake-utils.lib.mkApp {
         drv = vesta;
         name = "VESTA";
       };
     };
-
     nixosConfigurations = {
       # Define the NixOS configuration for the host
       "${host}" = nixpkgs.lib.nixosSystem {
         inherit system;
-
         # Pass special arguments to modules
         specialArgs = {
           inherit system inputs username host;
         };
-
         modules = [
           ./hosts/mambaLaptop/configuration.nix
           inputs.distro-grub-themes.nixosModules.${system}.default
+          # Import the Cisco VPN NixOS module
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -92,7 +86,6 @@
         ];
       };
     };
-
     homeConfigurations."mamba@mambaLaptop" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       modules = [

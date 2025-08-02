@@ -25,7 +25,8 @@
       imagemagick # For image rendering
       carbon-now-cli
       alejandra
-      vimPlugins.molten-nvim
+      python3Packages.cairosvg # For SVG support
+      python3Packages.pillow # Image processing
       prettierd
       ruff
     ];
@@ -237,6 +238,8 @@
         enable = true;
       };
 
+      image.enable = true;
+
       vimtex = {
         enable = true;
       };
@@ -245,7 +248,6 @@
         enable = true;
       };
 
-      # Molten plugin configuration - FIXED with proper closing brace
       molten = {
         enable = true;
         settings = {
@@ -256,7 +258,7 @@
           cover_empty_lines = false;
           copy_output = false;
           enter_output_behavior = "open_then_enter";
-          image_provider = "none";
+          image_provider = "image.nvim";
           output_crop_border = true;
           output_virt_lines = false;
           # Enhanced border for better visibility
@@ -289,9 +291,36 @@
       NotebookNavigator-nvim
       jupytext-nvim
       nvim-ts-context-commentstring
+      molten-nvim
+      image-nvim # For image rendering support
     ];
 
     extraConfigLua = ''
+      require("image").setup({
+          backend = "kitty", -- or "ueberzug"
+          integrations = {
+              markdown = {
+                  enabled = true,
+                  clear_in_insert_mode = false,
+                  download_remote_images = true,
+                  only_render_image_at_cursor = false,
+                  filetypes = { "markdown", "vimwiki" },
+              },
+              neorg = {
+                  enabled = true,
+                  clear_in_insert_mode = false,
+                  download_remote_images = true,
+                  only_render_image_at_cursor = false,
+                  filetypes = { "norg" },
+              },
+          },
+          max_width = nil,
+          max_height = nil,
+          max_width_window_percentage = nil,
+          max_height_window_percentage = 50,
+          kitty_method = "normal",
+      })
+
       -- Wrapping configuration
       require('wrapping').setup {}
 
