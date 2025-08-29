@@ -8,18 +8,14 @@
   gtk3,
   iconv,
   libGLU,
-  libGL,
   libglvnd,
   pango,
   xorg,
   glib,
-  glibc,
   gcc-unwrapped,
   cairo,
-  makeWrapper,
   fetchurl,
   autoPatchelfHook,
-  wrapGAppsHook,
 }:
 stdenv.mkDerivation rec {
   name = "VESTA-gtk3";
@@ -106,7 +102,7 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     homepage = "https://jp-minerals.org/vesta/en/";
-    description = "Visualization for Electronic and STructural Analysis";
+    description = "Visualization for Electronic and Structural Analysis";
     license = licenses.free;
     mainProgram = "VESTA";
     platforms = platforms.linux;

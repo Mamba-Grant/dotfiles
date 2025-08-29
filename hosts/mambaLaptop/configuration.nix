@@ -19,7 +19,7 @@ in {
     ./users.nix
     ./packages-fonts.nix
     ../../modules/amd-drivers.nix
-    ../../modules/nvidia-prime-drivers.nix
+    # ../../modules/nvidia-prime-drivers.nix
     ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
@@ -73,7 +73,6 @@ in {
     loader.systemd-boot.enable = true;
 
     loader.efi = {
-      #efiSysMountPoint = "/efi"; #this is if you have separate /efi partition
       canTouchEfiVariables = true;
     };
 
@@ -101,12 +100,6 @@ in {
   # Extra Module Options
   drivers.amdgpu.enable = true;
   drivers.intel.enable = true;
-  # drivers.nvidia.enable = true;
-  # drivers.nvidia-prime = {
-  #   enable = true;
-  #   intelBusID = "";
-  #   nvidiaBusID = "";
-  # };
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;
 
@@ -132,7 +125,6 @@ in {
   # Set your time zone.
   # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time.timeZone = "America/Chicago"; # Central Time Zone
-  # time.timeZone = "America/Anchorage"; # Alaska Trip
 
   # Services to start
   services = {
@@ -290,11 +282,6 @@ in {
       options = "--delete-older-than 7d";
     };
   };
-
-  # systemd.tmpfiles.rules = [
-  #   # creates the looking glass shm file
-  #   "f /dev/shm/looking-glass 0660 ${username} qemu-libvirtd -"
-  # ];
 
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["${username}"];

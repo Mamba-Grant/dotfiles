@@ -24,6 +24,7 @@ in {
     (with pkgs; [
       # System Packages
       grc
+      ovito
       github-desktop
       gparted
       ani-cli
@@ -128,6 +129,7 @@ in {
       julia
       devenv
       screen
+      hyprpicker
 
       #waybar  # if wanted experimental next line
       #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
