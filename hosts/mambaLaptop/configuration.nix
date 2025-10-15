@@ -322,10 +322,10 @@ in {
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia.open = true;
   hardware.nvidia.prime = {
-    offload = {
-      enable = lib.mkOverride 990 true;
-      enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true; # Provides `nvidia-offload` command.
-    };
+    # offload = {
+    #   enable = lib.mkOverride 990 true;
+    #   enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true; # Provides `nvidia-offload` command.
+    # };
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
   };

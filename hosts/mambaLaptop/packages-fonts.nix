@@ -24,6 +24,7 @@ in {
     (with pkgs; [
       # System Packages
       grc
+      temurin-jre-bin-17
       ovito
       github-desktop
       gparted
