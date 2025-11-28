@@ -42,6 +42,19 @@ in {
     '';
   };
 
+  fileSystems."/mnt/ZHOU_GRP" = {
+    device = "g293s490@zhou1.physics.ku.edu:/mnt/g293s490/ZHOU_GRP";
+    fsType = "sshfs";
+    options = [
+      "nodev"
+      "noatime"
+      "allow_other"
+      "IdentityFile=/root/.ssh/id_ed25519"
+      "uid=1000"
+      "gid=100"
+    ];
+  };
+
   # BOOT related stuff
   boot = {
     kernelPackages = pkgs.linuxPackages_latest; # Kernel

@@ -44,6 +44,7 @@ in {
       libappindicator
       libnotify
       openssl #required by Rainbow borders
+      sshfs
       pciutils
       wget
       xdg-user-dirs
@@ -179,12 +180,12 @@ in {
       tumbler
     ];
 
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+    };
 
     xwayland.enable = true;
 
