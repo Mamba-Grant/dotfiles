@@ -48,20 +48,20 @@
           inherit system inputs username host;
         };
         modules = [
-          ./hosts/mambaLaptop/configuration.nix
+          ./hosts/mambaFramework/configuration.nix
           inputs.distro-grub-themes.nixosModules.${system}.default
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.mamba = import homes/mambaLaptop/home.nix;
+            home-manager.users.mamba = import homes/mambaFramework/home.nix;
             home-manager.backupFileExtension = "old";
             home-manager.sharedModules = [nixvim.homeManagerModules.nixvim];
           }
         ];
       };
     };
-    homeConfigurations."mamba@mambaLaptop" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."mamba@mambaFramework" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       modules = [
         {
