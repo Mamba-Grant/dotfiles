@@ -30,14 +30,14 @@
     ...
   }: let
     system = "x86_64-linux";
-    host = "mambaFramework";
+    host = "default";
     username = "mamba";
-    # pkgs = import nixpkgs {
-    #   inherit system;
-    #   config = {
-    #     allowUnfree = true;
-    #   };
-    # };
+    pkgs = import nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
+      };
+    };
   in {
     nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
         inherit system;
@@ -58,18 +58,19 @@
           }
         ];
       };
-    # homeConfigurations."mamba@mambaFramework" = home-manager.lib.homeManagerConfiguration {
-    #   pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    #   modules = [
-    #     {
-    #       wayland.windowManager.hyprland = {
-    #         enable = true;
-    #         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    #         portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    #       };
-    #     }
-    #     # ...
-    #   ];
-    # };
+    homeConfigurations."mamba@mambaFramework" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      modules = [
+        {
+          wayland.windowManager.hyprland = {
+            enable = true;
+            # set the flake package
+            package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+            portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+          };
+        }
+        # ...
+      ];
+    };
   };
 }

@@ -1,6 +1,6 @@
 let
   username = "mamba";
-  homeDirectory = "/home/mamba";
+  # homeDirectory = "/home/mamba";
 in
   {pkgs, ...}: {
     imports = [
@@ -13,7 +13,7 @@ in
     ];
 
     home = {
-      inherit username homeDirectory;
+      inherit username;
       sessionVariables = {
         NIXPKGS_ALLOW_UNFREE = "1";
         NIXPKGS_ALLOW_INSECURE = "1";
