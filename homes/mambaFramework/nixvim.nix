@@ -188,24 +188,23 @@
       lsp = {
         enable = true;
         servers = {
-          nil_ls.enable = true; # Nix
-          julials.enable = true; # Julia
+          ansiblels.enable = false; # ⬅ important
+          nil_ls.enable = true;
+          julials.enable = true;
           julials.package = null;
-          pyright.enable = true; # Python
-          ts_ls.enable = true; # TypeScript
-          tailwindcss.enable = true; # Tailwind
-          svelte.enable = true; # Svelte
-          html.enable = true; # HTML
+          pyright.enable = true;
+          ts_ls.enable = true;
+          tailwindcss.enable = true;
+          svelte.enable = true;
+          html.enable = true;
         };
       };
-
       # A pretty list for showing diagnostics, references, telescope results, quickfix and location lists to help you solve all the trouble your code is causing.
       trouble = {
         enable = true;
         settings = {
           auto_open = false;
           auto_close = true;
-          use_diagnostic_signs = true;
         };
       };
 

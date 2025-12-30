@@ -1,4 +1,8 @@
-{ inputs, pkgs, ... }: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   home = {
     sessionVariables = {
       BROWSER = "firefox";
@@ -8,9 +12,9 @@
       target = ".mozilla/firefox/default/chrome/firefox-gnome-theme";
       source = inputs.firefox-gnome-theme;
     };
-    packages = with pkgs; [
-      libsForQt5.plasma-browser-integration
-    ];
+    # packages = with pkgs; [
+    #   libsForQt5.plasma-browser-integration
+    # ];
   };
 
   programs.firefox = {

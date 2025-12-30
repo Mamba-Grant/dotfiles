@@ -1,43 +1,17 @@
-{ inputs, pkgs, prev, ... }:
-let
+{
+  inputs,
+  pkgs,
+  prev,
+  ...
+}: let
   hyprland = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  xdg = pkgs.xdg;
   plugins = inputs.hyprland-plugins.packages.${pkgs.system};
-
-  launcher = pkgs.writeShellScriptBin "hypr" ''
-    #!/${pkgs.bash}/bin/bash
-
-    export WLR_NO_HARDWARE_CURSORS=1
-    export _JAVA_AWT_WM_NONREPARENTING=1
-    export XCURSOR_SIZE=24
-
-    exec ${hyprland}/bin/Hyprland
-  '';
 in {
   home.packages = with pkgs; [
-    # hyprcursor
-    launcher
-    xdg-desktop-portal-hyprland
-    xwaylandvideobridge
-    temurin-jre-bin
+    hyprpicker
+    hyprlock
   ];
-
-  # home.pointerCursor = {
-  #   gtk.enable = true;
-  #   # x11.enable = true;
-  #   package = pkgs.bibata-cursors;
-  #   name = "Bibata-Modern-Classic";
-  #   size = 16;
-  # };
-  #
-  xdg.desktopEntries."org.gnome.Settings" = {
-    name = "Settings";
-    comment = "Gnome Control Center";
-    icon = "org.gnome.Settings";
-    exec =
-      "env XDG_CURRENT_DESKTOP=gnome ${pkgs.gnome-control-center}/bin/gnome-control-center";
-    categories = [ "X-Preferences" ];
-    terminal = false;
-  };
 
   programs = {
     swaylock = {
@@ -46,70 +20,58 @@ in {
     };
   };
 
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
       env = [
-        "GTK_IM_MODULE, fcitx"
-        "QT_IM_MODULE, fcitx"
-        "XMODIFIERS, @im=fcitx"
+        "HYPRCURSOR_THEME,Bibata-Modern-Classic"
+        "XCURSOR_THEME,Bibata-Modern-Classic"
         "QT_QPA_PLATFORM, wayland"
         "QT_QPA_PLATFORMTHEME, qt5ct"
         "QT_STYLE_OVERRIDE,kvantum"
         "WLR_NO_HARDWARE_CURSORS, 1"
       ];
-      # monitor = [''
-      #   DP-2,preferred,0x0,1 # Since the config starts with "monitor="
-      #   workspace=1, monitor:DP-2, default:true, persistent:true
-      #   workspace=2, monitor:DP-2, persistent:true 
-      #   workspace=3, monitor:DP-2, persistent:true
-      #   workspace=4, monitor:DP-2, persistent:true
-      #   workspace=5, monitor:DP-2, persistent:true
-      #
-      #   monitor=eDP-1,preferred,1920x0,1
-      #   workspace=10, monitor:eDP-1, default:true, persistent:true
-      #
-      #   monitor=HDMI-A-1,preferred,0x1080,1
-      #   workspace=6, monitor:HDMI-A-1, default:true, persistent:true
-      #   workspace=7, monitor:HDMI-A-1, persistent:true
-      #   workspace=8, monitor:HDMI-A-1, persistent:true
-      #   workspace=9, monitor:HDMI-A-1, persistent:true
-      #
-      #
-      #   # Mirror
-      #   #monitor=DP-3,1920x1080@60,0x0,1,mirror,DP-2
-      #   #monitor=,preferred,auto,1,mirror,eDP-1
-      # ''];
-      monitor = [''
-        DP-2,preferred,0x0,1 # Since the config starts with "monitor="
-        workspace=5, monitor:DP-2, default:true, persistent:true
-        workspace=6, monitor:DP-2, persistent:true 
-        workspace=7, monitor:DP-2, persistent:true
-        workspace=8, monitor:DP-2, persistent:true
+      monitor = [
+        ''
+          DP-2,preferred,0x0,1
+          workspace=5, monitor:DP-2, default:true, persistent:true
+          workspace=6, monitor:DP-2, persistent:true
+          workspace=7, monitor:DP-2, persistent:true
+          workspace=8, monitor:DP-2, persistent:true
 
-        monitor=eDP-1,preferred,1920x0,1
-        workspace=10, monitor:eDP-1, default:true, persistent:true
-        workspace=9, monitor:eDP-1, persistent:true
+          monitor=eDP-1,preferred,1920x0,1
+          workspace=10, monitor:eDP-1, default:true, persistent:true
+          workspace=9, monitor:eDP-1, persistent:true
 
-        monitor=HDMI-A-1,preferred,0x1080,1
-        workspace=1, monitor:HDMI-A-1, default:true, persistent:true
-        workspace=2, monitor:HDMI-A-1, persistent:true
-        workspace=3, monitor:HDMI-A-1, persistent:true
-        workspace=4, monitor:HDMI-A-1, persistent:true
+          monitor=HDMI-A-1,preferred,0x1080,1
+          workspace=1, monitor:HDMI-A-1, default:true, persistent:true
+          workspace=2, monitor:HDMI-A-1, persistent:true
+          workspace=3, monitor:HDMI-A-1, persistent:true
+          workspace=4, monitor:HDMI-A-1, persistent:true
 
 
-        # Mirror
-        #monitor=DP-3,1920x1080@60,0x0,1,mirror,DP-2
-        #monitor=,preferred,auto,1,mirror,eDP-1
-      ''];
+          #monitor=DP-3,1920x1080@60,0x0,1,mirror,DP-2
+          #monitor=,preferred,auto,1,mirror,eDP-1
+        ''
+      ];
       "exec-once" = [
+        # "swww img /home/mamba/Pictures/Wallpapers/tora.png"
+        # "sh -c 'cd ~/.config/quickshell && qs'"
+        "caelestia-shell"
         ''
           tmux setenv -g HYPRLAND_INSTANCE_SIGNATURE "$HYPRLAND_INSTANCE_SIGNATURE"
         ''
         "easyeffects --gapplication-service"
         "ags"
         "swww kill; swww init"
-        "fcitx5"
         ''
           swayidle -w timeout 2400 'swaylock -f' timeout 2900 'pidof java || systemctl suspend' before-sleep 'swaylock -f'
         ''
@@ -133,21 +95,30 @@ in {
         preserve_split = true;
         smart_resizing = false;
       };
+
+      # Gesture bindings
+
+      gesture = [
+        "3, horizontal, workspace" # No modifier = workspace switch
+        "3, left, mod: ALT, float" # With ALT = float window
+        "3, down, mod: ALT, close"
+        "3, up, mod: SUPER, fullscreen"
+      ];
+
+      # Gesture behavior configuration
       gestures = {
-        workspace_swipe = true;
-        workspace_swipe_distance = 700;
-        workspace_swipe_fingers = 4;
-        workspace_swipe_cancel_ratio = 0.2;
-        workspace_swipe_min_speed_to_force = 5;
-        workspace_swipe_direction_lock = true;
-        workspace_swipe_direction_lock_threshold = 10;
+        workspace_swipe_distance = 300;
+        workspace_swipe_invert = true;
+        workspace_swipe_cancel_ratio = 0.5;
         workspace_swipe_create_new = true;
+        workspace_swipe_forever = false;
       };
-      binds = { scroll_event_delay = 0; };
+
+      binds = {scroll_event_delay = 0;};
       input = {
         # Keyboard: Add a layout and uncomment kb_options for Win+Space switching shortcut
         kb_layout = "us";
-        kb_variant = "intl";
+        # kb_variant = "intl";
         # kb_options = "grp:alt_shift_toggle";
         numlock_by_default = true;
         repeat_delay = 250;
@@ -177,13 +148,6 @@ in {
           noise = 1.0e-2;
           contrast = 1;
         };
-        # Shadow
-        drop_shadow = false;
-        shadow_ignore_window = true;
-        shadow_range = 20;
-        shadow_offset = "0 2";
-        shadow_render_power = 2;
-        "col.shadow" = "rgba(0000001A)";
 
         # Dim
         dim_inactive = false;
@@ -207,17 +171,14 @@ in {
           "windows, 1, 3, md3_decel, popin 60%"
           "border, 1, 10, default"
           "fade, 1, 2.5, md3_decel"
-          # "workspaces, 1, 3.5, md3_decel, slide"
           "workspaces, 1, 7, fluent_decel, slide"
-          # "workspaces, 1, 7, fluent_decel, slidefade 15%"
           "specialWorkspace, 1, 3, md3_decel, slidefadevert 15%"
-          # "specialWorkspace, 1, 3, md3_decel, slidevert"
         ];
       };
+
       misc = {
         vfr = 1;
         vrr = 1;
-        # layers_hog_mouse_focus = true;
         focus_on_activate = true;
         animate_manual_resizes = false;
         animate_mouse_windowdragging = false;
@@ -227,163 +188,139 @@ in {
         disable_hyprland_logo = true;
         new_window_takes_over_fullscreen = 2;
       };
-      debug = {
-        # overlay = true;
-        # damage_tracking = 0;
-        # damage_blink = true;
-      };
-      bind =
-        let SLURP_COMMAND = "$(slurp -d -c eedcf5BB -b 4f425644 -s 00000000)";
-        in [
-          "Super, C, exec, code --password-store=gnome"
-          "Super, T, exec, kitty --override shell=fish"
-          "Super, E, exec, nautilus --new-window"
-          "Super+Alt, E, exec, thunar"
-          "Super, W, exec, zen-bin"
-          "Control+Super, W, exec, thorium-browser --ozone-platform-hint=wayland --gtk-version=4 --ignore-gpu-blocklist --enable-features=TouchpadOverscrollHistoryNavigation"
-          "Super, X, exec, gnome-text-editor --new-window"
-          "Super+Shift, W, exec, wps"
-          ''Super, I, exec, XDG_CURRENT_DESKTOP="gnome" gnome-control-center''
-          "Control+Super, V, exec, pavucontrol"
-          "Control+Shift, Escape, exec, gnome-system-monitor"
-          "Super, Period, exec, pkill fuzzel || ~/.local/bin/fuzzel-emoji"
-          "Super, Q, killactive, "
-          "Super, Space, togglespecialworkspace"
-          "Shift+Super+Alt, Q, exec, hyprctl kill"
-          "Control+Shift+Alt, Delete, exec, pkill wlogout || wlogout -p layer-shell"
-          "Control+Shift+Alt+Super, Delete, exec, systemctl poweroff"
-          ''
-            Super+Shift+Alt, S, exec, grim -g "${SLURP_COMMAND}" - | swappy -f -
-          ''
-          ''
-            Super+Shift, S, exec, grim -g "${SLURP_COMMAND}" - | wl-copy
-          ''
-          "Super+Alt, R, exec, ~/.config/ags/scripts/record-script.sh"
-          "Control+Alt, R, exec, ~/.config/ags/scripts/record-script.sh --fullscreen"
-          "Super+Shift+Alt, R, exec, ~/.config/ags/scripts/record-script.sh --fullscreen-sound"
-          "Super+Shift, C, exec, hyprpicker -a"
-          "Super, V, exec, pkill fuzzel || cliphist list | fuzzel --no-fuzzy --dmenu | cliphist decode | wl-copy"
-          ''
-            Control+Super+Shift,S,exec,grim -g "${SLURP_COMMAND}" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"
-          ''
-          "Super, L, exec, swaylock"
-          "Super+Shift, L, exec, swaylock"
-          "Control+Super, Slash, exec, pkill anyrun || anyrun"
-          "Control+Super, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
-          "Control+Super, R, exec, killall ags ydotool; ags -b hypr"
-          "Super, Tab, exec, ags -t 'overview'"
-          "Super, Slash, exec, ags -t 'cheatsheet'"
-          "Super, B, exec, ags -t 'sideleft'"
-          "Super, A, exec, ags -t 'sideleft'"
-          "Super, O, exec, hyprctl setprop active opaque toggle"
-          "Super, N, exec, ags -t 'sideright'"
-          "Super, M, exec, ags run-js 'openMusicControls.value = !openMusicControls.value;'"
-          "Super, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
-          "Super, K, exec, ags -t 'osk'"
-          "Control+Alt, Delete, exec, ags -t 'session'"
-          "Super+Alt, f12, exec, notify-send 'Test notification' 'This is a really long message to test truncation and wrapping\\nYou can middle click or flick this notification to dismiss it!' -a 'Shell' -A 'Test1=I got it!' -A 'Test2=Another action'"
-          "Super+Alt, Equal, exec, notify-send 'Urgent notification' 'Ah hell no' -u critical -a 'Hyprland keybind'"
-          "Super+Shift, left, movewindow, l"
-          "Super+Shift, right, movewindow, r"
-          "Super+Shift, up, movewindow, u"
-          "Super+Shift, down, movewindow, d"
-          "Super, left, movefocus, l"
-          "Super, right, movefocus, r"
-          "Super, up, movefocus, u"
-          "Super, down, movefocus, d"
-          "Super, BracketLeft, movefocus, l"
-          "Super, BracketRight, movefocus, r"
-          "Control+Super, right, workspace, +1"
-          "Control+Super, left, workspace, -1"
-          "Control+Super, BracketLeft, workspace, -1"
-          "Control+Super, BracketRight, workspace, +1"
-          "Control+Super, up, workspace, -5"
-          "Control+Super, down, workspace, +5"
-          "Super, Page_Down, workspace, +1"
-          "Super, Page_Up, workspace, -1"
-          "Control+Super, Page_Down, workspace, +1"
-          "Control+Super, Page_Up, workspace, -1"
-          "Super+Alt, Page_Down, movetoworkspace, +1"
-          "Super+Alt, Page_Up, movetoworkspace, -1"
-          "Super+Shift, Page_Down, movetoworkspace, +1"
-          "Super+Shift, Page_Up, movetoworkspace, -1"
-          "Control+Super+Shift, Right, movetoworkspace, +1"
-          "Control+Super+Shift, Left, movetoworkspace, -1"
-          "Super+Shift, mouse_down, movetoworkspace, -1"
-          "Super+Shift, mouse_up, movetoworkspace, +1"
-          "Super+Alt, mouse_down, movetoworkspace, -1"
-          "Super+Alt, mouse_up, movetoworkspace, +1"
-          "Super, F, fullscreen, 0"
-          "Super, D, togglefloating"
-          "Super+Alt, F, fullscreenstate, 0"
-          "Super, 1, workspace, 1"
-          "Super, 2, workspace, 2"
-          "Super, 3, workspace, 3"
-          "Super, 4, workspace, 4"
-          "Super, 5, workspace, 5"
-          "Super, 6, workspace, 6"
-          "Super, 7, workspace, 7"
-          "Super, 8, workspace, 8"
-          "Super, 9, workspace, 9"
-          "Super, 0, workspace, 10"
-          "Super, S, togglespecialworkspace,"
-          "Control+Super, S, togglespecialworkspace,"
-          "Super, Tab, cyclenext"
-          "Super, Tab, bringactivetotop,"
-          "Super+Alt, 1, movetoworkspacesilent, 1"
-          "Super+Alt, 2, movetoworkspacesilent, 2"
-          "Super+Alt, 3, movetoworkspacesilent, 3"
-          "Super+Alt, 4, movetoworkspacesilent, 4"
-          "Super+Alt, 5, movetoworkspacesilent, 5"
-          "Super+Alt, 6, movetoworkspacesilent, 6"
-          "Super+Alt, 7, movetoworkspacesilent, 7"
-          "Super+Alt, 8, movetoworkspacesilent, 8"
-          "Super+Alt, 9, movetoworkspacesilent, 9"
-          "Super+Alt, 0, movetoworkspacesilent, 10"
-          "Control+Shift+Super, Up, movetoworkspacesilent, special"
-          "Super+Alt, S, movetoworkspacesilent, special"
-          "Super, mouse_up, workspace, +1"
-          "Super, mouse_down, workspace, -1"
-          "Control+Super, mouse_up, workspace, +1"
-          "Control+Super, H, exec, hyprctl reload"
-          "bind = Control+Super, mouse_down, workspace, -1"
-        ];
+      bind = let
+        SLURP_COMMAND = "$(slurp -d -c eedcf5BB -b 4f425644 -s 00000000)";
+      in [
+        "Super, D, global, caelestia:launcher"
+        # "Super, catchall, global, caelestia:launcherInterrupt"
+        # "Super, D, exec, pkill rofi || rofi -show drun -modi drun,filebrowser,run,window"
+        "Super, T, exec, foot --override shell=fish"
+        "Super, Return, exec, thunar"
+        "Super, Q, killactive, "
+        "Control+Shift+Alt, Delete, exec, pkill wlogout || wlogout -p layer-shell"
+        "Control+Shift+Alt+Super, Delete, exec, systemctl poweroff"
+        ''
+          Super+Shift+Alt, S, exec, grim -g "${SLURP_COMMAND}" - | swappy -f -
+        ''
+        ''
+          Super+Shift, S, exec, grim -g "${SLURP_COMMAND}" - | wl-copy
+        ''
+        "Super+Shift, C, exec, hyprpicker -a"
+        "Super, V, exec, pkill fuzzel || cliphist list | fuzzel --no-fuzzy --dmenu | cliphist decode | wl-copy"
+        ''
+          Control+Super+Shift,S,exec,grim -g "${SLURP_COMMAND}" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"
+        ''
+        "Super, L, exec, swaylock"
+        "Super+Shift, L, exec, swaylock"
+        "Control+Super, Slash, exec, pkill anyrun || anyrun"
+        "Super+Alt, f12, exec, notify-send 'Test notification' 'This is a really long message to test truncation and wrapping\\nYou can middle click or flick this notification to dismiss it!' -a 'Shell' -A 'Test1=I got it!' -A 'Test2=Another action'"
+        "Super+Alt, Equal, exec, notify-send 'Urgent notification' 'Ah hell no' -u critical -a 'Hyprland keybind'"
+        "Super+Shift, left, movewindow, l"
+        "Super+Shift, right, movewindow, r"
+        "Super+Shift, up, movewindow, u"
+        "Super+Shift, down, movewindow, d"
+        "Super, left, movefocus, l"
+        "Super, right, movefocus, r"
+        "Super, up, movefocus, u"
+        "Super, down, movefocus, d"
+        "Super, BracketLeft, movefocus, l"
+        "Super, BracketRight, movefocus, r"
+        "Control+Super, right, workspace, +1"
+        "Control+Super, left, workspace, -1"
+        "Control+Super, BracketLeft, workspace, -1"
+        "Control+Super, BracketRight, workspace, +1"
+        "Control+Super, up, workspace, -5"
+        "Control+Super, down, workspace, +5"
+        "Super, Page_Down, workspace, +1"
+        "Super, Page_Up, workspace, -1"
+        "Control+Super, Page_Down, workspace, +1"
+        "Control+Super, Page_Up, workspace, -1"
+        "Super+Alt, Page_Down, movetoworkspace, +1"
+        "Super+Alt, Page_Up, movetoworkspace, -1"
+        "Super+Shift, Page_Down, movetoworkspace, +1"
+        "Super+Shift, Page_Up, movetoworkspace, -1"
+        "Control+Super+Shift, Right, movetoworkspace, +1"
+        "Control+Super+Shift, Left, movetoworkspace, -1"
+        "Super+Shift, mouse_down, movetoworkspace, -1"
+        "Super+Shift, mouse_up, movetoworkspace, +1"
+        "Super+Alt, mouse_down, movetoworkspace, -1"
+        "Super+Alt, mouse_up, movetoworkspace, +1"
+        "Super, F, fullscreen, 0"
+        "Super+Alt, F, fullscreenstate, 0"
+        "Super+Shift, F, togglefloating, 0"
+        "Super, 1, workspace, 1"
+        "Super, 2, workspace, 2"
+        "Super, 3, workspace, 3"
+        "Super, 4, workspace, 4"
+        "Super, 5, workspace, 5"
+        "Super, 6, workspace, 6"
+        "Super, 7, workspace, 7"
+        "Super, 8, workspace, 8"
+        "Super, 9, workspace, 9"
+        "Super, 0, workspace, 10"
+        "Super, S, togglespecialworkspace,"
+        "Control+Super, S, togglespecialworkspace,"
+        "Super, Tab, cyclenext"
+        "Super, Tab, bringactivetotop,"
+        "Super+Shift, 1, movetoworkspacesilent, 1"
+        "Super+Shift, 2, movetoworkspacesilent, 2"
+        "Super+Shift, 3, movetoworkspacesilent, 3"
+        "Super+Shift, 4, movetoworkspacesilent, 4"
+        "Super+Shift, 5, movetoworkspacesilent, 5"
+        "Super+Shift, 6, movetoworkspacesilent, 6"
+        "Super+Shift, 7, movetoworkspacesilent, 7"
+        "Super+Shift, 8, movetoworkspacesilent, 8"
+        "Super+Shift, 9, movetoworkspacesilent, 9"
+        "Super+Shift, 0, movetoworkspacesilent, 10"
+        "Control+Shift+Super, Up, movetoworkspacesilent, special"
+        "Super+Alt, S, movetoworkspacesilent, special"
+        "Super, mouse_up, workspace, +1"
+        "Super, mouse_down, workspace, -1"
+        "Control+Super, mouse_up, workspace, +1"
+        "Control+Super, H, exec, hyprctl reload"
+      ];
       bindm = [
         "Super, mouse:272, movewindow"
         "Super, mouse:273, resizewindow"
         "Super, Z, movewindow"
       ];
       bindl = [
-        ",XF86AudioMute, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%"
-        "Super+Shift,M, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%"
-        ",Print,exec,grim - | wl-copy"
-        ''
-          Super+Shift, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
-        ''
-          ,XF86AudioNext, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
-        "Super+Shift, B, exec, playerctl previous"
-        ",XF86AudioPrev, exec, playerctl previous"
-        "Super+Shift, P, exec, playerctl play-pause"
-        ",XF86AudioPlay, exec, playerctl play-pause"
-        "Super+Shift, L, exec, sleep 0.1 && systemctl suspend"
-        ", XF86AudioMute, exec, ags run-js 'indicator.popup(1);'"
-        "Super+Shift,M,   exec, ags run-js 'indicator.popup(1);'"
+        # ",XF86AudioMute, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%"
+        # "Super+Shift,M, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%"
+        # ",Print,exec,grim - | wl-copy"
+        # ''
+        #   Super+Shift, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
+        # ''
+        #   ,XF86AudioNext, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
+        # "Super+Shift, B, exec, playerctl previous"
+        # ",XF86AudioPrev, exec, playerctl previous"
+        # "Super+Shift, P, exec, playerctl play-pause"
+        # ",XF86AudioPlay, exec, playerctl play-pause"
+        # "Super+Shift, L, exec, sleep 0.1 && systemctl suspend"
+        # ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
       ];
       bindle = [
-        ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 2%+"
-        ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"
-        ",XF86MonBrightnessUp, exec, ags run-js 'brightness.screen_value += 0.05;indicator.popup(1);'"
-        ",XF86MonBrightnessDown, exec, ags run-js 'brightness.screen_value -= 0.05;indicator.popup(1);'"
-        ",XF86AudioRaiseVolume, exec, ags run-js 'indicator.popup(1);'"
-        ",XF86AudioLowerVolume, exec, ags run-js 'indicator.popup(1);'"
-        ",XF86MonBrightnessUp, exec, ags run-js 'indicator.popup(1);'"
-        ",XF86MonBrightnessDown, exec, ags run-js 'indicator.popup(1);'"
+        # Brightness
+        ", XF86MonBrightnessUp, global, caelestia:brightnessUp"
+        ", XF86MonBrightnessDown, global, caelestia:brightnessDown"
+
+        # Media
+        "Ctrl+Super, Space, global, caelestia:mediaToggle"
+        ", XF86AudioPlay, global, caelestia:mediaToggle"
+        ", XF86AudioPause, global, caelestia:mediaToggle"
+        "Ctrl+Super, Equal, global, caelestia:mediaNext"
+        ", XF86AudioNext, global, caelestia:mediaNext"
+        "Ctrl+Super, Minus, global, caelestia:mediaPrev"
+        ", XF86AudioPrev, global, caelestia:mediaPrev"
+        ", XF86AudioStop, global, caelestia:mediaStop"
+        ", XF86AudioRaiseVolume, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ 0; wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
       ];
       bindr = [
-        "Control+Super, R, exec, killall ags .ags-wrapped ydotool; ags &"
-        "Control+Super+Alt, R, exec, hyprctl reload; killall ags ydotool; ags &"
+        # Kill/restart
+        "Ctrl+Super+Shift, R, exec, qs -c caelestia kill"
+        "Ctrl+Super+Alt, R, exec, qs -c caelestia kill; caelestia shell -d"
       ];
-      bindir = [ "Super, Super_L, exec, ags -t 'overview'" ];
       binde = [
         "Super, Minus, splitratio, -0.1"
         "Super, Equal, splitratio, 0.1"
@@ -391,19 +328,12 @@ in {
         "Super, Apostrophe, splitratio, 0.1"
       ];
       windowrule = [
-        "noblur,.*" # Disables blur for windows. Substantially improves performance.
-        "float, ^(steam)$"
-        "pin, ^(showmethekey-gtk)$"
         "float,title:^(Open File)(.*)$"
         "float,title:^(Select a File)(.*)$"
         "float,title:^(Choose wallpaper)(.*)$"
         "float,title:^(Open Folder)(.*)$"
         "float,title:^(Save As)(.*)$"
         "float,title:^(Library)(.*)$ "
-        "center,^(pavucontrol)"
-        "float, pavucontrol"
-        "float, nm-connection-editor|blueman-manager"
-        "float, zoom"
       ];
       windowrulev2 = [
         "tile,class:(wpsoffice)"
@@ -442,7 +372,6 @@ in {
         "noanim, sideright"
         "noanim, sideleft"
       ];
-      source = [ "./colors.conf" ];
     };
   };
 }

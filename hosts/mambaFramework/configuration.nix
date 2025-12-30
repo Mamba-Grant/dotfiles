@@ -18,11 +18,6 @@ in {
     ./hardware-configuration.nix
     ./users.nix
     ./packages-fonts.nix
-    # ../../modules/amd-drivers.nix
-    # ../../modules/nvidia-prime-drivers.nix
-    # ../../modules/intel-drivers.nix
-    # ../../modules/vm-guest-services.nix
-    # ../../modules/local-hardware-clock.nix
   ];
   programs.xfconf.enable = true;
 
@@ -42,18 +37,18 @@ in {
     '';
   };
 
-  fileSystems."/mnt/ZHOU_GRP" = {
-    device = "g293s490@zhou1.physics.ku.edu:/mnt/g293s490/ZHOU_GRP";
-    fsType = "sshfs";
-    options = [
-      "nodev"
-      "noatime"
-      "allow_other"
-      "IdentityFile=/root/.ssh/id_ed25519"
-      "uid=1000"
-      "gid=100"
-    ];
-  };
+  # fileSystems."/mnt/ZHOU_GRP" = {
+  #   device = "g293s490@zhou1.physics.ku.edu:/mnt/g293s490/ZHOU_GRP";
+  #   fsType = "sshfs";
+  #   options = [
+  #     "nodev"
+  #     "noatime"
+  #     "allow_other"
+  #     "IdentityFile=/root/.ssh/id_ed25519"
+  #     "uid=1000"
+  #     "gid=100"
+  #   ];
+  # };
 
   # BOOT related stuff
   boot = {
@@ -110,12 +105,6 @@ in {
     plymouth.enable = true;
   };
 
-  # Extra Module Options
-  # drivers.amdgpu.enable = true;
-  # drivers.intel.enable = true;
-  # vm.guest-services.enable = false;
-  # local.hardware-clock.enable = false;
-
   services.auto-cpufreq.enable = true;
   services.auto-cpufreq.settings = {
     battery = {
@@ -151,7 +140,6 @@ in {
 
     greetd = {
       enable = true;
-      vt = 3;
       settings = {
         default_session = {
           user = username;
@@ -312,33 +300,10 @@ in {
     SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", OWNER="mamba", MODE="0666"
   '';
 
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      runAsRoot = true;
-      swtpm.enable = true;
-      ovmf = {
-        enable = true;
-        packages = [
-          (pkgs.OVMF.override {
-            secureBoot = true;
-            tpmSupport = true;
-          })
-          .fd
-        ];
-      };
-    };
-  };
-
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia.open = true;
   hardware.nvidia.prime = {
-    # offload = {
-    #   enable = lib.mkOverride 990 true;
-    #   enableOffloadCmd = lib.mkIf config.hardware.nvidia.prime.offload.enable true; # Provides `nvidia-offload` command.
-    # };
     intelBusId = "PCI:0:2:0";
     nvidiaBusId = "PCI:1:0:0";
   };
@@ -354,5 +319,5 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 }

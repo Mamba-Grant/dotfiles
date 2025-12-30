@@ -74,22 +74,21 @@ in {
       jq
       foot
       blink
-      libsForQt5.qtstyleplugin-kvantum #kvantum
+      # libsForQt5.qtstyleplugin-kvantum #kvantum
       networkmanagerapplet
       nwg-look
-      kdePackages.dolphin
+      # kdePackages.dolphin
       pamixer
       pavucontrol
       playerctl
       polkit_gnome
       pyprland
-      libsForQt5.qt5ct
-      kdePackages.qt6ct
-      kdePackages.qtwayland
-      kdePackages.qtstyleplugin-kvantum #kvantum
+      # libsForQt5.qt5ct
+      # kdePackages.qt6ct
+      # kdePackages.qtwayland
+      # kdePackages.qtstyleplugin-kvantum #kvantum
       gtklp
       system-config-printer
-      rofi-wayland
       slurp
       loupe
       flameshot
@@ -100,6 +99,7 @@ in {
       docker
       swaynotificationcenter
       dbus
+      # quickshell
       swww
       unzip
       wallust
@@ -111,6 +111,7 @@ in {
       usbutils
       openconnect
       hidapi
+      cmake
 
       # Applications
       vesktop
@@ -142,7 +143,7 @@ in {
 
   # FONTS
   fonts.packages = with pkgs; [
-    vistafonts
+    vista-fonts
     corefonts
     noto-fonts
     noto-fonts-cjk-sans
@@ -164,7 +165,7 @@ in {
       xwayland.enable = true;
     };
 
-    waybar.enable = true;
+    # waybar.enable = true;
     hyprlock.enable = true;
     firefox.enable = true;
     git.enable = true;

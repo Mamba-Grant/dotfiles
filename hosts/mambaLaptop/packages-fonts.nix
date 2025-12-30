@@ -29,6 +29,7 @@ in {
       github-desktop
       gparted
       ani-cli
+      quickshell
       baobab
       btrfs-progs
       clang
@@ -89,7 +90,6 @@ in {
       kdePackages.qtstyleplugin-kvantum #kvantum
       gtklp
       system-config-printer
-      rofi-wayland
       slurp
       loupe
       flameshot
