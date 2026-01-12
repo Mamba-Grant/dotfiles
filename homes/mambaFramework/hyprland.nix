@@ -41,25 +41,7 @@ in {
       ];
       monitor = [
         ''
-          DP-2,preferred,0x0,1
-          workspace=5, monitor:DP-2, default:true, persistent:true
-          workspace=6, monitor:DP-2, persistent:true
-          workspace=7, monitor:DP-2, persistent:true
-          workspace=8, monitor:DP-2, persistent:true
-
-          monitor=eDP-1,preferred,1920x0,1
-          workspace=10, monitor:eDP-1, default:true, persistent:true
-          workspace=9, monitor:eDP-1, persistent:true
-
-          monitor=HDMI-A-1,preferred,0x1080,1
-          workspace=1, monitor:HDMI-A-1, default:true, persistent:true
-          workspace=2, monitor:HDMI-A-1, persistent:true
-          workspace=3, monitor:HDMI-A-1, persistent:true
-          workspace=4, monitor:HDMI-A-1, persistent:true
-
-
-          #monitor=DP-3,1920x1080@60,0x0,1,mirror,DP-2
-          #monitor=,preferred,auto,1,mirror,eDP-1
+          monitor=eDP-1,preferred,1920x0,1.2
         ''
       ];
       "exec-once" = [
