@@ -31,6 +31,7 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
+      "$office_apps" = "^(Microsoft (Word|Excel|PowerPoint|Publisher|Powershell|Visual Studio))$";
       env = [
         "HYPRCURSOR_THEME,Bibata-Modern-Classic"
         "XCURSOR_THEME,Bibata-Modern-Classic"
@@ -38,22 +39,26 @@ in {
         "QT_QPA_PLATFORMTHEME, qt5ct"
         "QT_STYLE_OVERRIDE,kvantum"
         "WLR_NO_HARDWARE_CURSORS, 1"
+        "XCURSOR_SIZE,24"
+        "XWAYLAND_DPI,96"
+        "GDK_BACKEND,wayland,x11"
+        "EDITOR,nvim"
+        "GDK_SCALE,1"
+        "MOZ_ENABLE_WAYLAND,1"
+        "ELECTRON_OZONE_PLATFORM_HINT,auto"
+        "WLR_RENDERER_ALLOW_SOFTWARE,1"
       ];
       monitor = [
         ''
-          monitor=eDP-1,preferred,1920x0,1.2
+          eDP-1,1920x1200@60,0x0,1
         ''
       ];
       "exec-once" = [
-        # "swww img /home/mamba/Pictures/Wallpapers/tora.png"
-        # "sh -c 'cd ~/.config/quickshell && qs'"
         "caelestia-shell"
         ''
           tmux setenv -g HYPRLAND_INSTANCE_SIGNATURE "$HYPRLAND_INSTANCE_SIGNATURE"
         ''
         "easyeffects --gapplication-service"
-        "ags"
-        "swww kill; swww init"
         ''
           swayidle -w timeout 2400 'swaylock -f' timeout 2900 'pidof java || systemctl suspend' before-sleep 'swaylock -f'
         ''
@@ -61,7 +66,6 @@ in {
         "wl-paste --type image --watch cliphist store"
         "hyprctl setcursor Bibata-Modern-Classic 24"
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "/.config/ags/scripts/color_generation/switchwall.sh --noswitch"
       ];
       general = {
         gaps_in = 4;
@@ -333,6 +337,7 @@ in {
         "opacity 0.9 0.7, class:^(org.gnome.Nautilus)$"
         "opacity 0.9 0.8, class:^([Nn]eovide)$"
         "opacity 0.9 0.8, class:^([Ss]potify)$"
+        "suppressevent maximize fullscreen, class:$office_apps"
       ];
       layerrule = [
         "xray 1, .*"

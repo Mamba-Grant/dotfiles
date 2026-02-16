@@ -35,6 +35,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.caelestia-shell.follows = "";
     };
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
   };
   outputs = inputs @ {
@@ -66,6 +70,18 @@
       modules = [
         ./hosts/mambaFramework/configuration.nix
         inputs.distro-grub-themes.nixosModules.${system}.default
+
+        ({
+          pkgs,
+          system ? pkgs.system,
+          ...
+        }: {
+          environment.systemPackages = [
+            inputs.winapps.packages."${system}".winapps
+            inputs.winapps.packages."${system}".winapps-launcher # optional
+          ];
+        })
+
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;

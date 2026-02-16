@@ -24,6 +24,7 @@ in {
     (with pkgs; [
       # System Packages
       grc
+      freerdp
       temurin-jre-bin-17
       ovito
       github-desktop
@@ -77,7 +78,7 @@ in {
       # libsForQt5.qtstyleplugin-kvantum #kvantum
       networkmanagerapplet
       nwg-look
-      # kdePackages.dolphin
+      aspell
       pamixer
       pavucontrol
       playerctl
@@ -120,6 +121,7 @@ in {
       zathura
       libreoffice-qt-fresh
       wpsoffice
+      kdePackages.calligra
       hunspell
       jdk # needed by libreoffice-qt6-fresh
       fend
@@ -160,7 +162,7 @@ in {
   programs = {
     hyprland = {
       enable = true;
-      #package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+      # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
       portalPackage = pkgs.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };

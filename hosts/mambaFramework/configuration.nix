@@ -37,6 +37,9 @@ in {
     '';
   };
 
+  services.onedrive = {
+    enable = true;
+  };
   # fileSystems."/mnt/ZHOU_GRP" = {
   #   device = "g293s490@zhou1.physics.ku.edu:/mnt/g293s490/ZHOU_GRP";
   #   fsType = "sshfs";
@@ -132,12 +135,16 @@ in {
   # Services to start
   services = {
     xserver = {
-      enable = false;
+      enable = true;
       xkb = {
         layout = "${keyboardLayout}";
         variant = "";
       };
     };
+
+    # xrdp = {
+    #   enable = true;
+    # };
 
     greetd = {
       enable = true;
@@ -301,13 +308,13 @@ in {
     SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", OWNER="mamba", MODE="0666"
   '';
 
-  hardware.graphics.enable = true;
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia.open = true;
-  hardware.nvidia.prime = {
-    intelBusId = "PCI:0:2:0";
-    nvidiaBusId = "PCI:1:0:0";
-  };
+  # hardware.graphics.enable = true;
+  # services.xserver.videoDrivers = ["nvidia"];
+  # hardware.nvidia.open = true;
+  # hardware.nvidia.prime = {
+  #   intelBusId = "PCI:0:2:0";
+  #   nvidiaBusId = "PCI:1:0:0";
+  # };
 
   console.keyMap = "${keyboardLayout}";
 
