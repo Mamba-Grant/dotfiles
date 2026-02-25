@@ -10,10 +10,6 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # hyprland-plugins = {
-    #   url = "github:hyprwm/hyprland-plugins";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     anyrun = {
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,10 +52,6 @@
     system = "x86_64-linux";
     host = "mambaFramework";
     username = "mamba";
-    forAllSystems = fn:
-      nixpkgs.lib.genAttrs nixpkgs.lib.platforms.linux (
-        system: fn nixpkgs.legacyPackages.${system}
-      );
   in {
     nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
       inherit system;

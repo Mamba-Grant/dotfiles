@@ -188,9 +188,9 @@ in {
         ''
           Super+Shift+Alt, S, exec, grim -g "${SLURP_COMMAND}" - | swappy -f -
         ''
-        ''
-          Super+Shift, S, exec, grim -g "${SLURP_COMMAND}" - | wl-copy
-        ''
+        # ''
+        #   Super+Shift, S, exec, grim -g "${SLURP_COMMAND}" - | wl-copy
+        # ''
         "Super+Shift, C, exec, hyprpicker -a"
         "Super, V, exec, pkill fuzzel || cliphist list | fuzzel --no-fuzzy --dmenu | cliphist decode | wl-copy"
         ''
@@ -271,19 +271,11 @@ in {
         "Super, Z, movewindow"
       ];
       bindl = [
-        # ",XF86AudioMute, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%"
-        # "Super+Shift,M, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%"
-        # ",Print,exec,grim - | wl-copy"
-        # ''
-        #   Super+Shift, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
-        # ''
-        #   ,XF86AudioNext, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
-        # "Super+Shift, B, exec, playerctl previous"
-        # ",XF86AudioPrev, exec, playerctl previous"
-        # "Super+Shift, P, exec, playerctl play-pause"
-        # ",XF86AudioPlay, exec, playerctl play-pause"
-        # "Super+Shift, L, exec, sleep 0.1 && systemctl suspend"
-        # ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        "Ctrl+Alt, C, global, caelestia:clearNotifs"
+        "Super, K, global, caelestia:showall"
+        ", Print, exec, caelestia screenshot"
+        "Super+Shift, S, global, caelestia:screenshotFreeze"
+        "Super+Shift, C, exec, hyprpicker -a"
       ];
       bindle = [
         # Brightness
