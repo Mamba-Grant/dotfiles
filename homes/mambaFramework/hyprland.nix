@@ -49,9 +49,8 @@ in {
         "WLR_RENDERER_ALLOW_SOFTWARE,1"
       ];
       monitor = [
-        ''
-          eDP-1,1920x1200@60,0x0,1
-        ''
+        "eDP-1,1920x1200@60,0x0,1"
+        "DP-2, 1920x1080, 1920x0, 1"
       ];
       "exec-once" = [
         "caelestia-shell"
