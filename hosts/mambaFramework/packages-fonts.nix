@@ -95,6 +95,7 @@ in {
       gwyddion # SPM/AFM data analysis and visualization
       inkscape # Vector graphics editor
       loupe # GNOME image viewer (modern)
+      blender
 
       # ─── Productivity & Office ────────────────────────────────────────────────
       obsidian # Markdown-based knowledge management
@@ -195,7 +196,10 @@ in {
     # waybar.enable = true;
     hyprlock.enable = true;
     firefox.enable = true;
-    git.enable = true;
+    git = {
+      enable = true;
+      lfs.enable = true;
+    };
     nm-applet.indicator = true;
 
     thunar.enable = true;

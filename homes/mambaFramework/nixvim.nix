@@ -188,7 +188,7 @@
       lsp = {
         enable = true;
         servers = {
-          ansiblels.enable = false; # ⬅ important
+          ansiblels.enable = false;
           nil_ls.enable = true;
           julials.enable = true;
           julials.package = null;
@@ -197,6 +197,7 @@
           tailwindcss.enable = true;
           svelte.enable = true;
           html.enable = true;
+          ccls.enable = true;
         };
       };
       # A pretty list for showing diagnostics, references, telescope results, quickfix and location lists to help you solve all the trouble your code is causing.
@@ -219,6 +220,7 @@
             svelte = ["prettier"];
             html = ["prettier"];
             nix = ["alejandra"];
+            cpp = ["clang-format"];
           };
           format_on_save = {
             timeout_ms = 500;
