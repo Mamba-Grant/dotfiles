@@ -358,7 +358,7 @@ in {
           --config=/home/mamba/.config/rclone/rclone.conf \
           --vfs-cache-mode full \
           --allow-other \
-          --vfs-cache-max-age 24h \
+          --vfs-cache-max-age 336h \
           --vfs-fast-fingerprint
       '';
 
