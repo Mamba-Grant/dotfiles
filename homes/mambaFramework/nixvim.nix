@@ -197,7 +197,7 @@
           tailwindcss.enable = true;
           svelte.enable = true;
           html.enable = true;
-          ccls.enable = true;
+          clangd.enable = true;
         };
       };
       # A pretty list for showing diagnostics, references, telescope results, quickfix and location lists to help you solve all the trouble your code is causing.
@@ -262,10 +262,8 @@
           image_provider = "image.nvim";
           output_crop_border = true;
           output_virt_lines = false;
-          # Enhanced border for better visibility
           output_win_border = ["╭" "─" "╮" "│" "╯" "─" "╰" "│"];
           output_win_hide_on_leave = false; # Keep output visible
-          # Significantly increased output window size
           output_win_max_height = 30; # Increased from 15
           output_win_max_width = 120; # Increased from 80
           output_win_style = "minimal";
@@ -274,7 +272,6 @@
           use_border_highlights = true; # Enable border highlights
           limit_output_chars = 50000; # Increased from 10000
           wrap_output = true; # Enable text wrapping
-          # Additional display options
           output_show_more = true;
           output_win_cover_gutter = true;
         };
@@ -339,10 +336,6 @@
               "# <codecell>",
               "## %%",
           },
-          -- highlight = {
-          --     enable = true,
-          --     mode = "all", -- or "code_cells"
-          -- }
       })
 
       -- Jupytext configuration
@@ -409,6 +402,16 @@
         action = "<cmd>lua require('luasnip').expand()<CR>";
         mode = "i";
         options.silent = true;
+      }
+
+      {
+        key = "<leader>la";
+        action = "<cmd>lua vim.lsp.buf.code_action()<CR>";
+        mode = "n";
+        options = {
+          silent = true;
+          desc = "LSP code actions";
+        };
       }
 
       # Visual mode indenting

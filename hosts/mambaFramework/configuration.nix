@@ -255,15 +255,6 @@ in {
     SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", OWNER="mamba", MODE="0666"
   '';
 
-  # Commented out: NVIDIA GPU support (uncomment and configure if needed)
-  # hardware.graphics.enable = true;
-  # services.xserver.videoDrivers = ["nvidia"];
-  # hardware.nvidia.open = true;
-  # hardware.nvidia.prime = {
-  #   intelBusId = "PCI:0:2:0";
-  #   nvidiaBusId = "PCI:1:0:0";
-  # };
-
   # ============================================================
   # VIRTUALISATION
   # ============================================================
@@ -338,8 +329,49 @@ in {
     autodetect = true;
   };
 
-  # ---- OneDrive ----
-  services.onedrive.enable = true; # Background OneDrive sync daemon
+  # # ---- OneDrive ----
+  # services.onedrive.enable = true; # Background OneDrive sync daemon
+
+  programs.fuse.userAllowOther = true;
+  systemd.services.box-mount = {
+    description = "Mount Box Drive via Rclone";
+    after = ["network-online.target"];
+    wants = ["network-online.target"];
+    wantedBy = ["multi-user.target"];
+
+    # This ensures rclone can find fusermount3 and other dependencies
+    path = [pkgs.rclone pkgs.fuse3 pkgs.coreutils];
+
+    serviceConfig = {
+      Type = "simple";
+      User = "mamba";
+      Group = "users";
+
+      # Pre-start: Clean up any dead mounts and ensure the folder exists
+      ExecStartPre = [
+        "-${pkgs.fuse3}/bin/fusermount3 -u /home/mamba/ChiLab"
+        "${pkgs.coreutils}/bin/mkdir -p /home/mamba/ChiLab"
+      ];
+
+      ExecStart = ''
+        ${pkgs.rclone}/bin/rclone mount box:Chi_Lab_data /home/mamba/ChiLab \
+          --config=/home/mamba/.config/rclone/rclone.conf \
+          --vfs-cache-mode full \
+          --allow-other \
+          --vfs-cache-max-age 24h \
+          --vfs-fast-fingerprint
+      '';
+
+      # Unmount properly when the service stops
+      ExecStop = "${pkgs.fuse3}/bin/fusermount3 -u /home/mamba/ChiLab";
+
+      Restart = "on-failure";
+      RestartSec = "10s";
+
+      # Required for FUSE to work properly inside a service
+      Environment = ["PATH=/run/wrappers/bin:$PATH"];
+    };
+  };
 
   # ---- PostgreSQL ----
   services.postgresql = {
@@ -354,14 +386,14 @@ in {
     '';
   };
 
-  # ---- Flatpak ----
-  services.flatpak.enable = false; # Set true to enable Flatpak app support
-  systemd.services.flatpak-repo = {
-    path = [pkgs.flatpak];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
-  };
+  # # ---- Flatpak ----
+  # services.flatpak.enable = false; # Set true to enable Flatpak app support
+  # systemd.services.flatpak-repo = {
+  #   path = [pkgs.flatpak];
+  #   script = ''
+  #     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #   '';
+  # };
 
   # ---- NFS / RPC (disabled) ----
   services.rpcbind.enable = false;

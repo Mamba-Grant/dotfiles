@@ -44,6 +44,7 @@
       showmethekey
       vscode
       ydotool
+      rclone
 
       # theming tools
       gradience
