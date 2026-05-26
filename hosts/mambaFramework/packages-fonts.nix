@@ -96,6 +96,7 @@ in {
       inkscape # Vector graphics editor
       loupe # GNOME image viewer (modern)
       blender
+      localsend
 
       # ─── Productivity & Office ────────────────────────────────────────────────
       obsidian # Markdown-based knowledge management

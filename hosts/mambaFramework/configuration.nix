@@ -357,6 +357,7 @@ in {
         ${pkgs.rclone}/bin/rclone mount box:Chi_Lab_data /home/mamba/ChiLab \
           --config=/home/mamba/.config/rclone/rclone.conf \
           --vfs-cache-mode full \
+          --no-modtime \
           --allow-other \
           --vfs-cache-max-age 336h \
           --vfs-fast-fingerprint
