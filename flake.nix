@@ -52,17 +52,20 @@
     system = "x86_64-linux";
     host = "mambaFramework";
     username = "mamba";
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
   in {
     nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
       inherit system;
-      # Pass special arguments to modules
       specialArgs = {
         inherit system inputs username host;
       };
       modules = [
+        {nixpkgs.pkgs = pkgs;}
         ./hosts/mambaFramework/configuration.nix
         inputs.distro-grub-themes.nixosModules.${system}.default
-
         ({
           pkgs,
           system ? pkgs.system,
@@ -70,23 +73,19 @@
         }: {
           environment.systemPackages = [
             inputs.winapps.packages."${system}".winapps
-            inputs.winapps.packages."${system}".winapps-launcher # optional
+            inputs.winapps.packages."${system}".winapps-launcher
           ];
         })
-
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-
           home-manager.users.${username}.imports = [
             ./homes/mambaFramework/home.nix
           ];
-
           home-manager.extraSpecialArgs = {
-            inherit inputs system; # can pass inputs to avoid passing packages directly
+            inherit inputs system;
           };
-
           home-manager.backupFileExtension = "old";
           home-manager.sharedModules = [nixvim.homeManagerModules.nixvim];
         }

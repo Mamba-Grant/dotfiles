@@ -18,8 +18,6 @@
       ]
   );
 in {
-  nixpkgs.config.allowUnfree = true;
-
   environment.systemPackages =
     (with pkgs; [
       # ─── Core System Utilities ─────────────────────────────────────────────────
@@ -81,6 +79,7 @@ in {
       screen # Terminal multiplexer
       wezterm # GPU-accelerated terminal emulator
       yt-dlp # YouTube/media downloader
+      nix-search # Better search
 
       # ─── Fonts & Display ──────────────────────────────────────────────────────
       libappindicator # System tray indicator library
@@ -88,6 +87,7 @@ in {
 
       # ─── GUI Applications ─────────────────────────────────────────────────────
       baobab # Disk usage analyzer (GNOME)
+      vesta-viewer
       # blink # Blink video calling app
       eog # Eye of GNOME image viewer
       # flameshot # Screenshot tool with annotation
@@ -97,6 +97,8 @@ in {
       loupe # GNOME image viewer (modern)
       blender
       localsend
+      fiji
+      pureref
 
       # ─── Productivity & Office ────────────────────────────────────────────────
       obsidian # Markdown-based knowledge management
