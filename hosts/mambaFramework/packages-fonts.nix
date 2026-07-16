@@ -99,6 +99,7 @@ in {
       localsend
       fiji
       pureref
+      kdePackages.filelight
 
       # ─── Productivity & Office ────────────────────────────────────────────────
       obsidian # Markdown-based knowledge management
@@ -121,7 +122,7 @@ in {
       zoom-us # Zoom video conferencing
 
       # ─── Cloud & File Sync ────────────────────────────────────────────────────
-      dropbox # Dropbox cloud storage client
+      # dropbox # Dropbox cloud storage client
 
       # ─── Virtualization & Containers ──────────────────────────────────────────
       distrobox # Run other Linux distros in containers
