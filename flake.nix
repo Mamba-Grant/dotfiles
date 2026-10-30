@@ -1,13 +1,13 @@
 {
   description = "Mamba's First Hyprland Flake";
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.11";
+    nixpkgs.url = "nixpkgs/nixos-26.05";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:hyprwm/Hyprland/v0.52.1-b";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     anyrun = {
@@ -15,7 +15,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.11";
+      url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     quickshell = {
@@ -77,8 +77,14 @@
           ];
 
           nix.settings = {
-            substituters = ["https://winapps.cachix.org/"];
-            trusted-public-keys = ["winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="];
+            substituters = [
+              "https://winapps.cachix.org/"
+              "https://hyprland.cachix.org"
+            ];
+            trusted-public-keys = [
+              "winapps.cachix.org-1:HI82jWrXZsQRar/PChgIx1unmuEsiQMQq+zt05CD36g="
+              "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+            ];
             trusted-users = ["mamba"];
           };
         })
@@ -93,7 +99,7 @@
             inherit inputs system;
           };
           home-manager.backupFileExtension = "old";
-          home-manager.sharedModules = [nixvim.homeManagerModules.nixvim];
+          home-manager.sharedModules = [nixvim.homeModules.nixvim];
         }
       ];
     };

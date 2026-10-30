@@ -1,7 +1,10 @@
-{ inputs, pkgs, ... }:
 {
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
-    inputs.anyrun.homeManagerModules.default
+    inputs.anyrun.homeManager.default
   ];
 
   programs.anyrun = {

@@ -1,14 +1,14 @@
 { inputs, pkgs, ... }:
 {
     # imports = [
-    #   inputs.anyrun.homeManagerModules.default
+    #   inputs.anyrun.homeManager.default
     # ];
 
     programs.mpv = {
         enable = true;
 
         package = (
-            pkgs.mpv-unwrapped.wrapper {
+            pkgs.mpv.override {
                 scripts = with pkgs.mpvScripts; [
                     # uosc
                     # mpv-osc-modern
@@ -23,7 +23,7 @@
                     sponsorblock
                     thumbfast
                     mpv-slicing
-                    mpv-cheatsheet
+                    mpv-cheatsheet-ng
                     autoload
                     autosub
                     mpris

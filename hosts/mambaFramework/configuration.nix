@@ -30,7 +30,13 @@ in {
   # Determines the NixOS release from which default settings for stateful data
   # (e.g. file locations, database versions) were taken. Do not change unless
   # you've read the upgrade docs: https://nixos.org/nixos/options.html
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
+  # programs.hyprland = {
+  #   enable = true;
+  #   # Use the package from your flake input
+  #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  # };
 
   # ============================================================
   # BOOT & KERNEL

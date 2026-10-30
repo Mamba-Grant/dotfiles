@@ -116,11 +116,6 @@
         enable = true;
       };
 
-      # Spellcheck
-      cmp-spell = {
-        enable = true;
-      };
-
       # Motion
       leap = {
         enable = true;
@@ -245,37 +240,37 @@
         enable = true;
       };
 
-      harpoon = {
-        enable = true;
-      };
+      # harpoon = {
+      #   enable = true;
+      # };
 
-      molten = {
-        enable = true;
-        settings = {
-          auto_image_popup = false;
-          auto_init_behavior = "init";
-          auto_open_html_in_browser = false;
-          auto_open_output = true;
-          cover_empty_lines = false;
-          copy_output = false;
-          enter_output_behavior = "open_then_enter";
-          image_provider = "image.nvim";
-          output_crop_border = true;
-          output_virt_lines = false;
-          output_win_border = ["╭" "─" "╮" "│" "╯" "─" "╰" "│"];
-          output_win_hide_on_leave = false; # Keep output visible
-          output_win_max_height = 30; # Increased from 15
-          output_win_max_width = 120; # Increased from 80
-          output_win_style = "minimal";
-          save_path.__raw = "vim.fn.stdpath('data')..'/molten'";
-          tick_rate = 500;
-          use_border_highlights = true; # Enable border highlights
-          limit_output_chars = 50000; # Increased from 10000
-          wrap_output = true; # Enable text wrapping
-          output_show_more = true;
-          output_win_cover_gutter = true;
-        };
-      };
+      # molten = {
+      #   enable = true;
+      #   settings = {
+      #     auto_image_popup = false;
+      #     auto_init_behavior = "init";
+      #     auto_open_html_in_browser = false;
+      #     auto_open_output = true;
+      #     cover_empty_lines = false;
+      #     copy_output = false;
+      #     enter_output_behavior = "open_then_enter";
+      #     image_provider = "image.nvim";
+      #     output_crop_border = true;
+      #     output_virt_lines = false;
+      #     output_win_border = ["╭" "─" "╮" "│" "╯" "─" "╰" "│"];
+      #     output_win_hide_on_leave = false; # Keep output visible
+      #     output_win_max_height = 30; # Increased from 15
+      #     output_win_max_width = 120; # Increased from 80
+      #     output_win_style = "minimal";
+      #     save_path.__raw = "vim.fn.stdpath('data')..'/molten'";
+      #     tick_rate = 500;
+      #     use_border_highlights = true; # Enable border highlights
+      #     limit_output_chars = 50000; # Increased from 10000
+      #     wrap_output = true; # Enable text wrapping
+      #     output_show_more = true;
+      #     output_win_cover_gutter = true;
+      #   };
+      # };
 
       highlight-colors = {
         enable = true;
@@ -294,30 +289,30 @@
     ];
 
     extraConfigLua = ''
-      require("image").setup({
-          backend = "kitty", -- or "ueberzug"
-          integrations = {
-              markdown = {
-                  enabled = true,
-                  clear_in_insert_mode = false,
-                  download_remote_images = true,
-                  only_render_image_at_cursor = false,
-                  filetypes = { "markdown", "vimwiki" },
-              },
-              neorg = {
-                  enabled = true,
-                  clear_in_insert_mode = false,
-                  download_remote_images = true,
-                  only_render_image_at_cursor = false,
-                  filetypes = { "norg" },
-              },
-          },
-          max_width = nil,
-          max_height = nil,
-          max_width_window_percentage = nil,
-          max_height_window_percentage = 50,
-          kitty_method = "normal",
-      })
+      -- require("image").setup({
+      --     backend = "kitty", -- or "ueberzug"
+      --     integrations = {
+      --         markdown = {
+      --             enabled = true,
+      --             clear_in_insert_mode = false,
+      --             download_remote_images = true,
+      --             only_render_image_at_cursor = false,
+      --             filetypes = { "markdown", "vimwiki" },
+      --         },
+      --         neorg = {
+      --             enabled = true,
+      --             clear_in_insert_mode = false,
+      --             download_remote_images = true,
+      --             only_render_image_at_cursor = false,
+      --             filetypes = { "norg" },
+      --         },
+      --     },
+      --     max_width = nil,
+      --     max_height = nil,
+      --     max_width_window_percentage = nil,
+      --     max_height_window_percentage = 50,
+      --     kitty_method = "normal",
+      -- })
 
       -- Wrapping configuration
       require('wrapping').setup {}
@@ -326,17 +321,17 @@
       require('img-clip').setup {}
 
       -- Notebook navigator configuration
-      require('notebook-navigator').setup({
-          activate_hydra = false,
-          repl_provider = 'molten',
-          syntax_highlight = false,
-          cell_markers = {
-              "# %%",
-              "#%%",
-              "# <codecell>",
-              "## %%",
-          },
-      })
+      -- require('notebook-navigator').setup({
+      --     activate_hydra = false,
+      --     repl_provider = 'molten',
+      --     syntax_highlight = false,
+      --     cell_markers = {
+      --         "# %%",
+      --         "#%%",
+      --         "# <codecell>",
+      --         "## %%",
+      --     },
+      -- })
 
       -- Jupytext configuration
       require('jupytext').setup {}
@@ -483,72 +478,72 @@
         options.silent = true;
       }
 
-      # Notebook navigator
-      {
-        key = "<leader>X";
-        action = "<cmd>lua require('notebook-navigator').run_cell()<CR>";
-        mode = "n";
-        options.silent = true;
-      }
-
-      {
-        key = "<leader>x";
-        action = "<cmd>lua require('notebook-navigator').run_and_move()<CR>";
-        mode = "n";
-        options.silent = true;
-      }
-
-      {
-        key = "]h";
-        action = "<cmd>lua require('notebook-navigator').move_cell('d')<CR>";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Move to next cell";
-        };
-      }
-
-      {
-        key = "[h";
-        action = "<cmd>lua require('notebook-navigator').move_cell('u')<CR>";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Move to previous cell";
-        };
-      }
-
-      # Create new cell above/below
-      {
-        key = "<leader>ca";
-        action = "<cmd>lua require('notebook-navigator').add_cell('above')<CR>";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Add cell above";
-        };
-      }
-
-      {
-        key = "<leader>cb";
-        action = "<cmd>lua require('notebook-navigator').add_cell('below')<CR>";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Add cell below";
-        };
-      }
-
-      # Delete current cell
-      {
-        key = "<leader>cd";
-        action = "<cmd>lua require('notebook-navigator').delete_cell()<CR>";
-        mode = "n";
-        options = {
-          silent = true;
-          desc = "Delete current cell";
-        };
-      }
+      # # Notebook navigator
+      # {
+      #   key = "<leader>X";
+      #   action = "<cmd>lua require('notebook-navigator').run_cell()<CR>";
+      #   mode = "n";
+      #   options.silent = true;
+      # }
+      #
+      # {
+      #   key = "<leader>x";
+      #   action = "<cmd>lua require('notebook-navigator').run_and_move()<CR>";
+      #   mode = "n";
+      #   options.silent = true;
+      # }
+      #
+      # {
+      #   key = "]h";
+      #   action = "<cmd>lua require('notebook-navigator').move_cell('d')<CR>";
+      #   mode = "n";
+      #   options = {
+      #     silent = true;
+      #     desc = "Move to next cell";
+      #   };
+      # }
+      #
+      # {
+      #   key = "[h";
+      #   action = "<cmd>lua require('notebook-navigator').move_cell('u')<CR>";
+      #   mode = "n";
+      #   options = {
+      #     silent = true;
+      #     desc = "Move to previous cell";
+      #   };
+      # }
+      #
+      # # Create new cell above/below
+      # {
+      #   key = "<leader>ca";
+      #   action = "<cmd>lua require('notebook-navigator').add_cell('above')<CR>";
+      #   mode = "n";
+      #   options = {
+      #     silent = true;
+      #     desc = "Add cell above";
+      #   };
+      # }
+      #
+      # {
+      #   key = "<leader>cb";
+      #   action = "<cmd>lua require('notebook-navigator').add_cell('below')<CR>";
+      #   mode = "n";
+      #   options = {
+      #     silent = true;
+      #     desc = "Add cell below";
+      #   };
+      # }
+      #
+      # # Delete current cell
+      # {
+      #   key = "<leader>cd";
+      #   action = "<cmd>lua require('notebook-navigator').delete_cell()<CR>";
+      #   mode = "n";
+      #   options = {
+      #     silent = true;
+      #     desc = "Delete current cell";
+      #   };
+      # }
 
       # Molten keybinds
       {

@@ -15,8 +15,27 @@
         jupyter-core
         jupyterlab
         jupyter-console
+        pymupdf
       ]
   );
+  julia-packages = pkgs.julia.withPackages [
+    "Plots"
+    "SpecialFunctions"
+    "LanguageServer"
+    "NeXLUncertainties"
+    "Unitful"
+    "PhysicalConstants"
+    "SymbolServer"
+    # "NativeMinuit"
+    "ForwardDiff"
+    "Optim"
+    "DataFrames"
+    "AdvancedHMC"
+    "LogDensityProblems"
+    "LogDensityProblemsAD"
+    "TransformVariables"
+    "ForwardDiff"
+  ];
 in {
   environment.systemPackages =
     (with pkgs; [
@@ -77,9 +96,11 @@ in {
       ffmpeg # Audio/video encoding and processing
       foot # Minimal Wayland terminal emulator
       screen # Terminal multiplexer
-      wezterm # GPU-accelerated terminal emulator
       yt-dlp # YouTube/media downloader
+      openimageio
       nix-search # Better search
+      pandoc
+      texliveMinimal
 
       # ─── Fonts & Display ──────────────────────────────────────────────────────
       libappindicator # System tray indicator library
@@ -98,7 +119,6 @@ in {
       blender
       localsend
       fiji
-      pureref
       kdePackages.filelight
 
       # ─── Productivity & Office ────────────────────────────────────────────────
@@ -146,7 +166,6 @@ in {
       # ─── Development & Scientific ─────────────────────────────────────────────
       devenv # Reproducible development environments (Nix-based)
       hyprpicker # Hyprland color picker
-      julia # Julia scientific programming language
       tectonic # Self-contained LaTeX compiler
       ani-cli # CLI tool for streaming/downloading anime
 
@@ -171,6 +190,7 @@ in {
     ])
     ++ [
       python-packages # Defined separately (see python-packages expression)
+      julia-packages
     ];
 
   # FONTS
@@ -193,8 +213,8 @@ in {
     hyprland = {
       enable = true;
       # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
-      xwayland.enable = true;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
     # waybar.enable = true;
