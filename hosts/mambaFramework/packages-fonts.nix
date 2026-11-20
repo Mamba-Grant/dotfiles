@@ -174,22 +174,9 @@ in {
       gparted # Partition editor GUI
       ovito # Scientific data visualization (atoms/molecules)
       temurin-jre-bin-17 # Eclipse Temurin JRE 17
-
-      # ─── Commented-out / Optional ─────────────────────────────────────────────
-      # openconnect # VPN client (Cisco AnyConnect-compatible)
-      # libsForQt5.qtstyleplugin-kvantum  # Kvantum Qt5 theme engine
-      # libsForQt5.qt5ct                  # Qt5 configuration tool
-      # kdePackages.qt6ct                 # Qt6 configuration tool
-      # kdePackages.qtwayland             # Qt6 Wayland platform plugin
-      # kdePackages.qtstyleplugin-kvantum # Kvantum Qt6 theme engine
-      # quickshell                        # Quick shell (alternative to ags)
-      # waybar                            # Wayland status bar
-      # (pkgs.waybar.overrideAttrs (oldAttrs: {  # Waybar with experimental features
-      #   mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      # }))
     ])
     ++ [
-      python-packages # Defined separately (see python-packages expression)
+      python-packages
       julia-packages
     ];
 

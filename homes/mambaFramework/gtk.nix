@@ -1,10 +1,10 @@
-{ inputs, pkgs, ... }: {
+{pkgs, ...}: {
   gtk = {
     enable = true;
 
     theme = {
       name = "Flat-Remix-GTK-Blue-Light";
-      package = pkgs.flat-remix-gtk;  # Ensure theme is installed
+      package = pkgs.flat-remix-gtk; # Ensure theme is installed
     };
 
     iconTheme = {
@@ -31,13 +31,8 @@
         gtk-menu-images = true;
         gtk-enable-event-sounds = true;
         gtk-enable-input-feedback-sounds = false;
-        # gtk-xft-antialias = true;
-        # gtk-xft-hinting = true;
-        # gtk-xft-hintstyle = "hintslight";
-        # gtk-xft-rgba = "rgb";
         gtk-application-prefer-dark-theme = false;
       };
     };
   };
 }
-

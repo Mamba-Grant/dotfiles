@@ -17,6 +17,7 @@ in
       ./mimelist.nix
       ./nixvim.nix
       ./hyprland.nix
+      ./hypridle.nix
     ];
 
     home.packages = [
