@@ -1,24 +1,11 @@
 {
   inputs,
   pkgs,
-  prev,
   ...
-}: let
-  hyprland = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  xdg = pkgs.xdg;
-  plugins = inputs.hyprland-plugins.packages.${pkgs.system};
-in {
+}: {
   home.packages = with pkgs; [
     hyprpicker
-    hyprlock
   ];
-
-  programs = {
-    swaylock = {
-      enable = true;
-      package = pkgs.swaylock-effects;
-    };
-  };
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -30,7 +17,7 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    package = null; # set to null when I define in my NixOS flake
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     settings = {
       "$office_apps" = "^(Microsoft (Word|Excel|PowerPoint|Publisher|Powershell|Visual Studio))$";
@@ -60,9 +47,6 @@ in {
           tmux setenv -g HYPRLAND_INSTANCE_SIGNATURE "$HYPRLAND_INSTANCE_SIGNATURE"
         ''
         "easyeffects --gapplication-service"
-        ''
-          swayidle -w timeout 2400 'swaylock -f' timeout 2900 'pidof java || systemctl suspend' before-sleep 'swaylock -f'
-        ''
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
         "hyprctl setcursor Bibata-Modern-Classic 24"
@@ -197,8 +181,6 @@ in {
         ''
           Control+Super+Shift,S,exec,grim -g "${SLURP_COMMAND}" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"
         ''
-        "Super, L, exec, swaylock"
-        "Super+Shift, L, exec, swaylock"
         "Control+Super, Slash, exec, pkill anyrun || anyrun"
         "Super+Alt, f12, exec, notify-send 'Test notification' 'This is a really long message to test truncation and wrapping\\nYou can middle click or flick this notification to dismiss it!' -a 'Shell' -A 'Test1=I got it!' -A 'Test2=Another action'"
         "Super+Alt, Equal, exec, notify-send 'Urgent notification' 'Ah hell no' -u critical -a 'Hyprland keybind'"
@@ -337,7 +319,6 @@ in {
         "noanim, selection"
         "noanim, overview"
         "noanim, anyrun"
-        "blur, swaylock"
         "blur, eww"
         "ignorealpha 0.8, eww"
         "noanim, noanim"

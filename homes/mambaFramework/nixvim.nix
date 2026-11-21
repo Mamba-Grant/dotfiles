@@ -149,7 +149,7 @@
         };
         fromLua = [
           {
-            paths = "~/dotfiles/homes/mambaLaptop/lua_snip_snippets/";
+            paths = "~/dotfiles/homes/mambaFramework/lua_snip_snippets/";
           }
         ];
       };

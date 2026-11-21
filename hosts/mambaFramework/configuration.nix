@@ -24,23 +24,8 @@ in {
     ./packages-fonts.nix # Installed packages and fonts
   ];
 
-  # ============================================================
-  # SYSTEM STATE VERSION
-  # ============================================================
-  # Determines the NixOS release from which default settings for stateful data
-  # (e.g. file locations, database versions) were taken. Do not change unless
-  # you've read the upgrade docs: https://nixos.org/nixos/options.html
   system.stateVersion = "26.05";
-  # programs.hyprland = {
-  #   enable = true;
-  #   # Use the package from your flake input
-  #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-  #   portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  # };
 
-  # ============================================================
-  # BOOT & KERNEL
-  # ============================================================
   boot = {
     # Use the latest stable Linux kernel
     kernelPackages = pkgs.linuxPackages_latest;
@@ -57,7 +42,6 @@ in {
     ];
 
     kernelModules = [
-      "v4l2loopback" # OBS virtual camera support
       "usbtmc" # USB Test & Measurement Class (e.g. Keithley instruments)
     ];
 
@@ -202,11 +186,6 @@ in {
   # ============================================================
   # POWER MANAGEMENT
   # ============================================================
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "schedutil"; # Responsive governor that follows scheduler hints
-  };
-
   services.auto-cpufreq = {
     enable = true;
     settings = {
@@ -252,7 +231,7 @@ in {
   users.groups.usbtmc = {};
   services.udev.extraRules = ''
     # Keithley 2450 SourceMeter — grant read/write access to usbtmc group
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", MODE="0666", GROUP="usbtmc", SYMLINK+="keithley2450"
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="05e6", ATTRS{idProduct}=="2450", MODE="0660", GROUP="usbtmc", SYMLINK+="keithley2450"
 
     # Generic USBTMC class devices (class 0xFE, subclass 0x03)
     SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="fe", ATTR{bInterfaceSubClass}=="03", MODE="0666", GROUP="usbtmc"
@@ -292,13 +271,6 @@ in {
     '';
   };
 
-  # PAM rule so swaylock can authenticate via the login stack
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
-
   # ============================================================
   # SERVICES
   # ============================================================
@@ -334,9 +306,6 @@ in {
     enable = false; # Set true to enable S.M.A.R.T. disk monitoring
     autodetect = true;
   };
-
-  # # ---- OneDrive ----
-  # services.onedrive.enable = true; # Background OneDrive sync daemon
 
   programs.fuse.userAllowOther = true;
   systemd.services.box-mount = {
@@ -379,28 +348,6 @@ in {
       Environment = ["PATH=/run/wrappers/bin:$PATH"];
     };
   };
-
-  # ---- PostgreSQL ----
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_15;
-    dataDir = "/var/lib/postgresql/15";
-    # Trust-based auth for local connections (suitable for dev; tighten for production)
-    authentication = ''
-      local all all trust
-      host all all 127.0.0.1/32 trust
-      host all all ::1/128 trust
-    '';
-  };
-
-  # # ---- Flatpak ----
-  # services.flatpak.enable = false; # Set true to enable Flatpak app support
-  # systemd.services.flatpak-repo = {
-  #   path = [pkgs.flatpak];
-  #   script = ''
-  #     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  #   '';
-  # };
 
   # ---- NFS / RPC (disabled) ----
   services.rpcbind.enable = false;

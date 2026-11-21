@@ -1,5 +1,4 @@
 # Variables
-
 {
   # Git Configuration ( For Pulling Software Repos )
   gitUsername = "Grant-Mamba";
@@ -12,7 +11,7 @@
   clock24h = false;
 
   # Program Options
-  browser = "firefox"; # Set Default Browser (google-chrome-stable for google-chrome)
-  terminal = "foot"; # Set Default System Terminal
+  browser = "firefox";
+  terminal = "foot";
   keyboardLayout = "us";
 }

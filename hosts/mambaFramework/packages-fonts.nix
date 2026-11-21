@@ -18,24 +18,6 @@
         pymupdf
       ]
   );
-  julia-packages = pkgs.julia.withPackages [
-    "Plots"
-    "SpecialFunctions"
-    "LanguageServer"
-    "NeXLUncertainties"
-    "Unitful"
-    "PhysicalConstants"
-    "SymbolServer"
-    # "NativeMinuit"
-    "ForwardDiff"
-    "Optim"
-    "DataFrames"
-    "AdvancedHMC"
-    "LogDensityProblems"
-    "LogDensityProblemsAD"
-    "TransformVariables"
-    "ForwardDiff"
-  ];
 in {
   environment.systemPackages =
     (with pkgs; [
@@ -70,7 +52,7 @@ in {
       dbus # D-Bus inter-process communication daemon
       grim # Wayland screenshot tool
       gtk-engine-murrine # GTK2 engine required for some GTK themes
-      hypridle # Hyprland idle daemon (requires unstable channel)
+      # hypridle # Hyprland idle daemon (requires unstable channel)
       imagemagick # CLI image manipulation
       inxi # System information tool
       jq # JSON processor
@@ -177,7 +159,6 @@ in {
     ])
     ++ [
       python-packages
-      julia-packages
     ];
 
   # FONTS
@@ -199,13 +180,10 @@ in {
   programs = {
     hyprland = {
       enable = true;
-      # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
-    # waybar.enable = true;
-    hyprlock.enable = true;
     firefox.enable = true;
     git = {
       enable = true;

@@ -24,7 +24,6 @@ in {
         "audio"
         "docker"
         "qemu-libvirtd"
-        "disk"
         "kvm"
         "libvirtd"
         "fuse"

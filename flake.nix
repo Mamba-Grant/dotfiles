@@ -8,7 +8,6 @@
     };
     hyprland = {
       url = "github:hyprwm/Hyprland/v0.52.1-b";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     anyrun = {
       url = "github:Kirottu/anyrun";
@@ -41,7 +40,6 @@
     self,
     nixpkgs,
     home-manager,
-    flake-utils,
     distro-grub-themes,
     nixvim,
     caelestia-shell,
@@ -57,6 +55,10 @@
       config.allowUnfree = true;
     };
   in {
+    devShells.${system}.default = pkgs.callPackage ./shell.nix {};
+    devShells.${system}.julia = pkgs.callPackage ./shell.nix {
+      juliaPackages = ["Plots" "Unitful" "DataFrames" "Plots" "AdvancedHMC" "LogDensityProblems" "ForwardDiff"];
+    };
     nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
