@@ -169,6 +169,14 @@ in {
   security.rtkit.enable = true; # Realtime priority for audio threads
 
   # ============================================================
+  # iGPU
+  # ============================================================
+  hardware.graphics = {
+    enable = true;
+    extraPackages = [pkgs.intel-media-driver];
+  };
+
+  # ============================================================
   # BLUETOOTH
   # ============================================================
   hardware.bluetooth = {

@@ -6,9 +6,9 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      url = "github:hyprwm/Hyprland/v0.52.1-b";
-    };
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland/v0.52.1-b";
+    # };
     anyrun = {
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,9 +55,8 @@
       config.allowUnfree = true;
     };
   in {
-    devShells.${system}.default = pkgs.callPackage ./shell.nix {};
-    devShells.${system}.julia = pkgs.callPackage ./shell.nix {
-      juliaPackages = ["Plots" "Unitful" "DataFrames" "Plots" "AdvancedHMC" "LogDensityProblems" "ForwardDiff"];
+    devShells.${system} = {
+      default = pkgs.callPackage ./shell.nix {};
     };
     nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
       inherit system;
@@ -66,6 +65,7 @@
       };
       modules = [
         {nixpkgs.pkgs = pkgs;}
+        {nix.registry.dots.flake = self;}
         ./hosts/mambaFramework/configuration.nix
         inputs.distro-grub-themes.nixosModules.${system}.default
         ({

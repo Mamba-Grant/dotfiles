@@ -89,6 +89,7 @@ in {
       libnotify # Desktop notification library
 
       # ─── GUI Applications ─────────────────────────────────────────────────────
+      nautilus
       baobab # Disk usage analyzer (GNOME)
       vesta-viewer
       # blink # Blink video calling app
@@ -102,13 +103,13 @@ in {
       localsend
       fiji
       kdePackages.filelight
+      olympus
 
       # ─── Productivity & Office ────────────────────────────────────────────────
       obsidian # Markdown-based knowledge management
       zathura # Minimal document viewer
       libreoffice-qt-fresh # LibreOffice (Qt build, latest)
       wpsoffice # WPS Office suite
-      # kdePackages.calligra # KDE office/drawing suite
       hunspell # Spell checking library (used by office apps)
       jdk # Java Development Kit (required by libreoffice-qt6-fresh)
       fend # Interactive calculator/unit converter
@@ -122,9 +123,6 @@ in {
       # ─── Communication ────────────────────────────────────────────────────────
       vesktop # Unofficial Discord client (Vencord-based)
       zoom-us # Zoom video conferencing
-
-      # ─── Cloud & File Sync ────────────────────────────────────────────────────
-      # dropbox # Dropbox cloud storage client
 
       # ─── Virtualization & Containers ──────────────────────────────────────────
       distrobox # Run other Linux distros in containers
@@ -180,8 +178,6 @@ in {
   programs = {
     hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
 
     firefox.enable = true;
